@@ -12,15 +12,15 @@ function install_pathogen() {
     # From https://github.com/tpope/vim-pathogen
     mkdir -p ~/.vim/autoload ~/.vim/bundle && \
     curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-    printf "\" Setup Pathogen\n\
-        execute pathogen#infect()\n" >> ~/.vimrc
+    printf "\" Setup Pathogen\n" >> ~/.vimrc
+    printf "execute pathogen#infect()\n" >> ~/.vimrc
 }
 
 function install_nerd_tree() {
     mkdir -p ~/.vim/bundle/nerdtree
     git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
-    printf "\" Allow NERDTREE to make new files\n\
-        set modifiable\n" >> ~/.vimrc
+    printf "\" Allow NERDTREE to make new files\n" >> ~/.vimrc
+    printf "set modifiable\n" >> ~/.vimrc
 
 }
 
@@ -40,6 +40,14 @@ function install_syntastic() {
     mkdir -p ~/.vim/bundle/syntastic
     git clone --depth=1 https://github.com/vim-syntastic/syntastic.git \
         ~/.vim/bundle/syntastic
+    printf "\" Syntastic setup\n" >> ~/.vimrc
+    printf "set statusline+=%%#warningmsg#\n" >> ~/.vimrc
+    printf "set statusline+=%%{SyntasticStatuslineFlag()}\n" >> ~/.vimrc
+    printf "set statusline+=%%*\n\n" >> ~/.vimrc
+    printf "let g:syntastic_always_populate_loc_list = 1\n" >> ~/.vimrc
+    printf "let g:syntastic_auto_loc_list = 1\n" >> ~/.vimrc
+    printf "let g:syntastic_check_on_open = 1\n" >> ~/.vimrc
+    printf "let g:syntastic_check_on_wq = 0\n" >> ~/.vimrc
 }
 
 function install_multi_cursors() {
@@ -53,7 +61,13 @@ function install_airline() {
     git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
 }
 
+function install_gitgutter() {
+    mkdir -p ~/.vim/bundle/vim-gitgutter
+    git clone git://github.com/airblade/vim-gitgutter.git ~/.vim/bundle/vim-gitgutter
+}
+
 function main() {
+    get_vimrc
     install_pathogen
     install_nerd_tree
     install_nerd_tree_git
@@ -61,6 +75,7 @@ function main() {
     install_syntastic
     install_multi_cursors
     install_airline
+    install_gitgutter
     vim -u NONE -c "Helptags" -c q
 }
 
