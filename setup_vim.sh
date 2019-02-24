@@ -32,8 +32,8 @@ function install_nerd_tree_git() {
 
 
 function install_commentary() {
-    mkdir -p ~/.vim/bundle/pack/tpope/start
-    git clone https://tpope.io/vim/commentary.git ~/.vim/bundle/pack/tpope/start
+    mkdir -p ~/.vim/bundle/vim-commentary
+    git clone https://github.com/tpope/vim-commentary.git ~/.vim/bundle/vim-commentary
 }
 
 function install_syntastic() {
