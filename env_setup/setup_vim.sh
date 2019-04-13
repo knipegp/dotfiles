@@ -36,6 +36,12 @@ function install_commentary() {
     git clone https://github.com/tpope/vim-commentary.git ~/.vim/bundle/vim-commentary
 }
 
+function install_fugitive() {
+    mkdir -p ~/.vim/bundle/vim-fugitive
+    git clone https://github.com/tpope/vim-fugitive.git ~/.vim/bundle/vim-fugitive
+    vim -u NONE -c "helptags ~/.vim/bundle/vim-fugitve/vim-fugitive/doc" -c q
+}
+
 function install_syntastic() {
     mkdir -p ~/.vim/bundle/syntastic
     git clone --depth=1 https://github.com/vim-syntastic/syntastic.git \
@@ -76,6 +82,7 @@ function main() {
     install_multi_cursors
     install_airline
     install_gitgutter
+    install_fugitive
     vim -u NONE -c "Helptags" -c q
 }
 
