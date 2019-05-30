@@ -14,3 +14,27 @@ set number
 let g:clipbrdDefaultReg = '+'
 " Highlight all search hits
 set hlsearch
+" Setup Pathogen
+execute pathogen#infect()
+autocmd VimEnter "*" Helptags
+" Allow NERDTREE to make new files
+set modifiable
+" Syntastic setup
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_c_checkers = ["gcc", "clang_check"]
+
+" There should be a way to do dynamic compile flags using the c.vim functions.
+" This is just a hack.
+let g:syntastic_c_config_file = ".syntastic_c_config"
+let g:syntastic_clang_check_config_file = ".syntastic_c_config"
+
+" For tmux coloring
+set background=dark
