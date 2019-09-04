@@ -1,0 +1,21 @@
+#!/bin/bash
+
+ORIGIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DOTFILE_DIR_NAME=dotfiles
+
+function install_dotfile {
+    install_path=~/.$1
+    if [ -f $install_path ]; then
+        mv $install_path $install_path.orig
+    fi
+    ln -s $ORIGIN_DIR/$DOTFILE_DIR_NAME/$1 $install_path
+}
+
+function main {
+    dotfiles=`ls $ORIGIN_DIR/$DOTFILE_DIR_NAME`
+    for filename in ${dotfiles[*]}; do
+        install_dotfile	$filename
+    done
+}
+
+main

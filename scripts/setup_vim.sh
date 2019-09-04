@@ -4,10 +4,6 @@
 # get-the-source-directory-of-a-bash-script-from-within-the-script-itself
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-function get_vimrc() {
-    cp $DIR/vimrc ~/.vimrc
-}
-
 function install_pathogen() {
     # From https://github.com/tpope/vim-pathogen
     mkdir -p ~/.vim/autoload ~/.vim/bundle && \
@@ -73,7 +69,6 @@ function install_gitgutter() {
 }
 
 function main() {
-    get_vimrc
     install_pathogen
     install_nerd_tree
     install_nerd_tree_git
