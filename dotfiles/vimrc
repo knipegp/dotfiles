@@ -1,3 +1,8 @@
+" fnamemodify from https://stackoverflow.com/a/18734557
+let top_directory = resolve(fnamemodify(resolve(expand('<sfile>:p')), ':h') . "/..")
+
+execute "source " . top_directory . "/scripts/FileExists.vim"
+
 :set mouse=r
 syntax on
 
@@ -26,3 +31,8 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 " For tmux coloring
 set background=dark
+
+let add_on_script = top_directory . "/scripts/AddOns.vim"
+if FileExists(add_on_script)
+    execute "source " . add_on_script
+endif
