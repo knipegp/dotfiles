@@ -32,7 +32,7 @@ highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 " For tmux coloring
 set background=dark
 
-let add_on_script = top_directory . "/scripts/AddOns.vim"
+let add_on_script = top_directory . "/vim/PlugIns.vim"
 if FileExists(add_on_script)
     execute "source " . add_on_script
 endif

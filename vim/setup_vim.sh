@@ -22,6 +22,11 @@ function install_nerd_tree() {
     printf "set modifiable\n" >> $PLUGIN_RC
 }
 
+function install_powerline() {
+    printf "\" Powerline setup\n" >> $PLUGIN_RC
+    printf "let g:airline_powerline_fonts = 1\n" >> $PLUGIN_RC
+}
+
 function install_fugitive() {
     vim -u NONE -c "helptags $DIR/bundle/vim-fugitve/vim-fugitive/doc" -c q
 }
@@ -35,6 +40,11 @@ function install_syntastic() {
     printf "let g:syntastic_auto_loc_list = 1\n" >> $PLUGIN_RC
     printf "let g:syntastic_check_on_open = 1\n" >> $PLUGIN_RC
     printf "let g:syntastic_check_on_wq = 0\n" >> $PLUGIN_RC
+    printf "let g:syntastic_aggregate_errors = 1\n" >> $PLUGIN_RC
+    printf "\" Syntastic cpp setup\n" >> $PLUGIN_RC
+    printf "let g:syntastic_cpp_checkers = ['clang-check', 'gcc']\n" >> $PLUGIN_RC
+    printf "let g:syntastic_cpp_clang_check_args = '--analyze'\n" >> $PLUGIN_RC
+    printf "let g:syntastic_cpp_gcc_args = '-x c++ -Wall -Wextra -lstdc++'\n" >> $PLUGIN_RC
 }
 
 function install_vimtex() {
@@ -43,8 +53,9 @@ function install_vimtex() {
 }
 
 function install_youcompleteme() {
+    python3 $DIR/bundle/YouCompleteMe/install.py --clang-completer
     printf "\" YouCompleteMe setup\n" >> $PLUGIN_RC
-    printf "let g:ycm_filetype_blacklist = {\n"
+    printf "let g:ycm_filetype_blacklist = {\n" >> $PLUGIN_RC
     printf "\t\\ 'tex' : 1,\n" >> $PLUGIN_RC
     printf "\t\\ 'plaintex' : 1,\n" >> $PLUGIN_RC
     printf "\t\\ 'rst' : 1,\n" >> $PLUGIN_RC
