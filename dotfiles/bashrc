@@ -111,4 +111,4 @@ if ! shopt -oq posix; then
   fi
 fi
 
-PATH=$PATH:/usr/local/go/bin:/opt/riscv/bin:/opt/oclint/oclint-0.13.1/bin:~/.local/go/bin
+PATH=$PATH:/usr/local/go/bin:/opt/riscv/bin:/opt/oclint/oclint-0.13.1/bin:~/.local/go/bin:~/.local/bin

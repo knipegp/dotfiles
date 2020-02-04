@@ -14,7 +14,8 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 " Syntastic c setup
 let g:syntastic_c_checkers = ['clang_tidy']
-let g:syntastic_c_clang_tidy_args = '-checks=clang-analyzer-*,cppcoreguidelines-*'
+let g:syntastic_c_clang_tidy_args = '-checks=clang-analyzer-*,cppcoreguidelines-* -p compile_commands.json'
+let g:syntastic_c_clang_tidy_post_args = ""
 " Syntastic cpp setup
 let g:syntastic_cpp_checkers = ['clang_tidy', 'oclint']
 let g:syntastic_cpp_clang_tidy_args = '-checks=clang-analyzer-*,cppcoreguidelines-*'
@@ -56,3 +57,36 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " Powerline setup
 let g:airline_powerline_fonts = 1
+" Setup Pathogen
+execute pathogen#infect()
+" Allow NERDTREE to make new files
+set modifiable
+" Syntastic setup
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_aggregate_errors = 1
+" Syntastic cpp setup
+let g:syntastic_cpp_checkers = ['clang-check', 'gcc']
+let g:syntastic_cpp_clang_check_args = '--analyze'
+let g:syntastic_cpp_gcc_args = '-x c++ -Wall -Wextra -lstdc++'
+" Vimtex setup
+let g:tex_flavor = "latex"
+" YouCompleteMe setup
+let g:ycm_filetype_blacklist = {
+	\ 'tex' : 1,
+	\ 'plaintex' : 1,
+	\ 'rst' : 1,
+	\ 'markdown' : 1,
+\}
+" Snippets setup
+" From: https://github.com/SirVer/ultisnips/blob/master/README.md#quick-start
+" autocmd BufNewFile,BufRead *.tex
+" 	\ let g:UltiSnipsExpandTrigger="<tab>"
+" 	\ let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" 	\ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
