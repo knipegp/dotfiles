@@ -73,8 +73,8 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    if test ! -r ~/.dircolors || dircolors -b ~/.dircolors; then
-        dircolors -b
+    if test ! -r ~/.dircolors || eval dircolors -b ~/.dircolors; then
+        dircolors -b 1>/dev/null
     fi
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -106,4 +106,4 @@ fi
 
 PATH=$PATH:/usr/local/go/bin:/opt/riscv/bin:/opt/oclint/oclint-0.13.1/bin:~/.local/go/bin:~/.local/bin
 
-keychain --agents ssh --eval id_rsa --quiet
+keychain --agents ssh --eval id_rsa --quiet 1>/dev/null
