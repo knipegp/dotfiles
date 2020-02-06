@@ -1,7 +1,22 @@
 " fnamemodify from https://stackoverflow.com/a/18734557
-let top_directory = resolve(fnamemodify(resolve(expand('<sfile>:p')), ':h') . "/..")
+let script_dir = resolve(fnamemodify(resolve(expand('<sfile>:p')), ':h') . '/../vimscripts')
 
-execute "source " . top_directory . "/scripts/FileExists.vim"
+function FileExists(file_path)
+   if filereadable(a:file_path)
+       return 1
+   endif
+   return 0
+endfunction
+
+let vim_plug_init = script_dir . '/VimPlugInit.vim'
+if FileExists(vim_plug_init)
+    execute 'source' . vim_plug_init
+	let add_on_script = g:script_dir . '/PlugIns.vim'
+	if FileExists(add_on_script)
+		execute 'source ' . add_on_script
+	endif
+
+endif
 
 :set mouse=r
 syntax on
@@ -32,7 +47,5 @@ highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 " For tmux coloring
 set background=dark
 
-let add_on_script = top_directory . "/vim/PlugIns.vim"
-if FileExists(add_on_script)
-    execute "source " . add_on_script
-endif
+" Disable text wrapping
+set nowrap
