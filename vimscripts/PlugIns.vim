@@ -22,10 +22,7 @@ let g:syntastic_aggregate_errors = 1
 " let g:syntastic_vim_checkers = ['vint']
 " " Syntastic python setup
 " let g:syntastic_python_checkers = ['pylint', 'mypy']
-" " TODO: Remove the absolute path
 " let g:syntastic_python_mypy_args = '--config-file=' . $HOME . '/dotfiles/python/mypy.ini'
-" " Syntastic go setup
-" let g:syntastic_go_checkers = ['govet', 'gofmt', 'golint']
 " " Disable syntastic checkers for LaTeX
 " let g:syntastic_tex_checkers = []
 " " Vimtex setup
