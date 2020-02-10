@@ -104,4 +104,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-keychain --agents ssh --eval id_rsa --quiet 1>/dev/null
+hash keychain 2>/dev/null
+if [ $? -eq 0 ]; then
+    /usr/bin/keychain ~/.ssh/id_rsa --quiet
+    source ~/.keychain/$HOSTNAME-sh
+fi
