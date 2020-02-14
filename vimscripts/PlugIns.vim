@@ -8,12 +8,9 @@ set statusline+=%*
 let g:syntastic_sh_shellcheck_args = '-x'
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
-" " Syntastic python setup
-" let g:syntastic_python_checkers = ['pylint', 'mypy']
-" let g:syntastic_python_mypy_args = '--config-file=' . $HOME . '/dotfiles/python/mypy.ini'
 " " Disable syntastic checkers for LaTeX
 " let g:syntastic_tex_checkers = []
 " autocmd BufNewFile,BufRead *.cls   set syntax=tex
