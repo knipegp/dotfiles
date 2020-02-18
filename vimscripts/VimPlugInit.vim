@@ -22,6 +22,7 @@ if !bad
     Plug 'vim-airline/vim-airline'
     Plug 'ycm-core/YouCompleteMe'
     Plug 'SirVer/ultisnips'
+    Plug 'flazz/vim-colorschemes'
 
     call plug#end()
 endif
