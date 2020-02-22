@@ -23,6 +23,7 @@ if !bad
     Plug 'ycm-core/YouCompleteMe'
     Plug 'SirVer/ultisnips'
     Plug 'flazz/vim-colorschemes'
+    Plug 'lervag/vimtex'
 
     call plug#end()
 endif
