@@ -186,7 +186,7 @@ bar {
 exec_always feh --bg-fill ~/Pictures/joshua-tree-park--wallpaper.jpg
 
 # Run compton
-exec_always compton
+exec --no-startup-id compton -b &
 
 # Enable natural scrolling
 exec xinput --set-prop "SYNA328E:00 06CB:CD50 Touchpad" "libinput Natural Scrolling Enabled" 1
