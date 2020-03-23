@@ -24,6 +24,7 @@ if !bad
     Plug 'SirVer/ultisnips'
     Plug 'flazz/vim-colorschemes'
     Plug 'lervag/vimtex'
+    Plug 'rust-lang/rust.vim'
 
     call plug#end()
 endif
