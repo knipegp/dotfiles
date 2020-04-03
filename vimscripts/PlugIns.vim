@@ -34,5 +34,5 @@ if has('nvim')
     " 	\ let g:UltiSnipsExpandTrigger="<tab>"
     " 	\ let g:UltiSnipsJumpForwardTrigger="<c-b>"
     " 	\ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-    colorscheme molokai
+    colorscheme gruvbox
 endif
