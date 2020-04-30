@@ -26,6 +26,7 @@ if !bad
     Plug 'SirVer/ultisnips'
     Plug 'lervag/vimtex'
     Plug 'rust-lang/rust.vim'
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
     call plug#end()
 endif
