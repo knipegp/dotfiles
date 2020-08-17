@@ -101,4 +101,4 @@ if [ $? -eq 0 ]; then
     source ~/.keychain/$HOSTNAME-sh
 fi
 
-# export PATH="$PATH":~/.local/bin
+export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin
