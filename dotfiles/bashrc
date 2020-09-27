@@ -95,10 +95,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
-hash keychain 2>/dev/null
-if [ $? -eq 0 ]; then
-    /usr/bin/keychain ~/.ssh/id_rsa --quiet
-    source ~/.keychain/"$HOSTNAME"-sh
+
+if hash keychain 2>/dev/null; then
+    /usr/bin/keychain "$HOME"/.ssh/id_rsa --quiet
+    source "$HOME"/.keychain/"$HOSTNAME"-sh
 fi
 
 export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin
@@ -110,3 +110,12 @@ export PATH="$PATH:$NPM_PACKAGES/bin"
 # Preserve MANPATH if you already defined it somewhere in your config.
 # Otherwise, fall back to `manpath` so we can inherit from `/etc/manpath`.
 export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+
+# From: https://www.tecmint.com/view-colored-man-pages-in-linux/
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
