@@ -52,3 +52,19 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
+
+
+ ;; From: https://github.com/abo-abo/org-download/blob/master/README.md#set-up
+ ;; (require 'org-download)
+
+ ;; Drag-and-drop to `dired`
+ ;; (add-hook 'dired-mode-hook 'org-download-enable)
+(setq reftex-default-bibliography '("~/org/bibliography/references.bib"))
+
+;; see org-ref for use of these variables
+(setq org-ref-bibliography-notes "~/org/bibliography/notes.org"
+      org-ref-default-bibliography '("~/org/bibliography/references.bib")
+      org-ref-pdf-directory "~/org/docs/")
+
+(add-hook 'go-mode-hook '(lambda ()
+                      (setq flycheck-checker 'golangci-lint)))
