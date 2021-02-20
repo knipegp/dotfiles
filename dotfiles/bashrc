@@ -101,15 +101,7 @@ if hash keychain 2>/dev/null; then
     source "$HOME"/.keychain/"$HOSTNAME"-sh
 fi
 
-export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin
-
-NPM_PACKAGES="${HOME}/.npm-packages"
-
-export PATH="$PATH:$NPM_PACKAGES/bin"
-
-# Preserve MANPATH if you already defined it somewhere in your config.
-# Otherwise, fall back to `manpath` so we can inherit from `/etc/manpath`.
-export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin:$HOME/.poetry/bin
 
 # From: https://www.tecmint.com/view-colored-man-pages-in-linux/
 export LESS_TERMCAP_mb=$'\e[1;32m'
@@ -119,3 +111,11 @@ export LESS_TERMCAP_se=$'\e[0m'
 export LESS_TERMCAP_so=$'\e[01;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
+
+wttr()
+{
+    # change Paris to your default location
+    local request="wttr.in/${1-Encinitas}"
+    [ "$(tput cols)" -lt 125 ] && request+='?n'
+    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+}

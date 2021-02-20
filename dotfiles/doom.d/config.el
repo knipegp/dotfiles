@@ -26,15 +26,29 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
+;; (setq debug-on-message 1)
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
+(require 'org)
 (setq org-directory "~/org/")
 (setq org-log-done 'time)
-
+(setq org-agenda-files '("~/org/slip-box" "~/org/slip-box/daily"))
+(org-babel-do-load-languages 'org-babel-load-languages '((ditaa . t)))
+(require 'ox-latex)
+(add-to-list 'org-latex-packages-alist '("" "booktabs"))
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-latex-listings 'minted
+      org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+(map! :map visual-line-mode-map
+      :m "j" 'evil-next-visual-line
+      :m "k" 'evil-previous-visual-line)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -57,14 +71,99 @@
  ;; From: https://github.com/abo-abo/org-download/blob/master/README.md#set-up
  ;; (require 'org-download)
 
+(require 'org-ref)
+
  ;; Drag-and-drop to `dired`
  ;; (add-hook 'dired-mode-hook 'org-download-enable)
-(setq reftex-default-bibliography '("~/org/bibliography/references.bib"))
+(setq reftex-default-bibliography '("~/bibliography/references.bib"))
 
 ;; see org-ref for use of these variables
 (setq org-ref-bibliography-notes "~/org/bibliography/notes.org"
       org-ref-default-bibliography '("~/org/bibliography/references.bib")
-      org-ref-pdf-directory "~/org/docs/")
+      org-ref-pdf-directory "~/org/bibliography/pdfs/")
+
+(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+
+(require 'ivy-bibtex)
+
+(setq bibtex-completion-library-path '("~/org/bibliography"))
+(setq bibtex-completion-bibliography '("~/org/bibliography/references.bib"))
+
+(require 'org-roam-bibtex)
+(add-hook 'after-init-hook #'org-roam-bibtex-mode)
+
+(require 'org-roam)
+(add-hook 'after-init-hook #'org-roam-mode)
+(executable-find "sqlite3")
+(setq org-roam-directory "~/org/slip-box")
+(setq orb-preformat-keywords
+      '("citekey" "title" "url" "author-or-editor" "keywords" "file")
+      orb-process-file-keyword t
+      orb-file-field-extensions '("pdf"))
+
+(setq orb-templates
+      '(("r" "ref" plain (function org-roam-capture--get-point)
+         ""
+         :file-name "${citekey}"
+         :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n#+roam_alias:\n#+roam_tags:
+
+- tags ::
+- keywords :: ${keywords}
+
+* ${title}
+:PROPERTIES:
+:Custom_ID: ${citekey}
+:URL: ${url}
+:AUTHOR: ${author-or-editor}
+:END:")))
+
+(setq org-roam-capture-templates '(("d" "default" plain (function org-roam--capture-get-point)
+     "%?"
+     :file-name "%<%Y%m%d%H%M%S>-${slug}"
+     :head "#+title: ${title}\n#+roam_alias:\n#+roam_tags:"
+     :unnarrowed t
+)))
+
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         #'org-roam-capture--get-point
+         "* %?"
+         :file-name "daily/%<%Y-%m-%d>"
+         :head "#+title: Journal %<%Y-%m-%d>\n#+roam_key:%<%Y-%m-%d>\n#+roam_alias:\n#+roam_tags:
+
+* Scheduled
+* Journal
+* Fleeting :fleeting:
+")))
 
 (add-hook 'go-mode-hook '(lambda ()
-                      (setq flycheck-checker 'golangci-lint)))
+                           (setq flycheck-checker 'golangci-lint)))
+(add-hook 'sh-mode-hook '(lambda ()
+                           (setq flycheck-checker 'sh-shellcheck)))
+(add-hook 'python-mode-hook '(lambda ()
+                               (setq flycheck-checker 'python-pylint)))
+(require 'lsp)
+(add-hook 'python-mode-hook '(lambda()
+                               (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.pytest_cache\\'")
+                               (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]__pycache__\\'")
+                               (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.mypy_cache\\'")))
+(add-hook 'scala-mode-hook '(lambda ()
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]vlsi\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]tools\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]tests\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]software\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]sims\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]scripts\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]project\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]docs\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]target\\'")
+                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]toolchains\\'")))
+
+(load "latex.el" nil t t)
+
+(load "alloy-mode.el")
+(require 'alloy-mode)
+(add-to-list 'auto-mode-alist '("\\.als\\'" . alloy-mode))
+
+(provide 'config)
+;;; config.el ends here

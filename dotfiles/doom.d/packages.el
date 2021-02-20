@@ -1,6 +1,8 @@
-;; -*- no-byte-compile: t; -*-
+;;; package --- External packages to install
+;;; Commentary:
+;; no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
-
+;;; Code:
 ;; To install a package with Doom you must declare them here, run 'doom sync' on
 ;; the command line, then restart Emacs for the changes to take effect.
 ;; Alternatively, use M-x doom/reload.
@@ -16,14 +18,24 @@
 
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
-(package! verilog-mode)
+(package! org-ref)
+(package! ivy-bibtex)
+(package! org-roam)
+(package! org-roam-bibtex)
+(package! org-attach-screenshot)
+(package! auctex)
+(package! helm)
+(package! helm-org)
+(package! org-attach-screenshot)
+(package! lsp-metals)
 
 ;; To install a package directly from a particular repo, you'll need to specify
 ;; a `:recipe'. You'll find documentation on what `:recipe' accepts here:
 ;; https://github.com/raxod502/straight.el#the-recipe-format
 ;(package! another-package
 ;  :recipe (:host github :repo "username/repo"))
-
+(package! alloy-mode
+  :recipe (:host github :repo "torus/alloy-mode"))
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
 ;; `:files' in the `:recipe':
@@ -45,5 +57,5 @@
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
-
-(require 'org-ref)
+;;; packages.el ends here
+(provide 'packages)
