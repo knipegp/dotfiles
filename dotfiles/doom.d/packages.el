@@ -19,7 +19,6 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 (package! org-ref)
-(package! ivy-bibtex)
 (package! org-roam)
 (package! org-roam-bibtex)
 (package! org-attach-screenshot)

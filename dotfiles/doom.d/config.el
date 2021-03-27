@@ -20,7 +20,6 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 (setq doom-font (font-spec :family "monospace" :size 14))
-
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
@@ -34,14 +33,43 @@
 (setq org-log-done 'time)
 (setq org-agenda-files '("~/org/slip-box" "~/org/slip-box/daily"))
 (org-babel-do-load-languages 'org-babel-load-languages '((ditaa . t)))
+(org-babel-do-load-languages 'org-babel-load-languages '((dot . t)))
 (require 'ox-latex)
 (add-to-list 'org-latex-packages-alist '("" "booktabs"))
 (add-to-list 'org-latex-packages-alist '("" "minted"))
+(add-to-list 'org-latex-packages-alist '("" "bm"))
 (setq org-latex-listings 'minted
       org-latex-pdf-process
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+(setq org-latex-minted-options
+        '(("frame" "lines") ("linenos=true")))
+(eval-after-load 'org-latex (add-to-list 'org-latex-classes "neu_msthesis"))
+
+(with-eval-after-load 'ox-latex
+   (add-to-list 'org-latex-classes
+                '("thesis"
+                  "\\documentclass{macro/neu_msthesis}
+                  \\usepackage[utf8]{inputenc}
+                  \\usepackage[T1]{fontenc}
+                  \\usepackage{graphicx}
+                  \\usepackage{grffile}
+                  \\usepackage{wrapfig}
+                  \\usepackage{longtable}
+                  \\usepackage{rotating}
+                  \\usepackage{amssymb}
+                  \\usepackage{capt-of}
+                  \\usepackage[normalem]{ulem}
+                  \\usepackage{amsmath}
+                  \\usepackage{textcomp}
+                  \\usepackage{caption}
+                  \\input{macro/macro}
+                  [NO-DEFAULT-PACKAGES]"
+                  ("\\chapter{%s}" . "\\chapter*{%s}")
+                  ("\\section{%s}" . "\\section*{%s}")
+                  ("\\subsection{%s}" . "\\subsection*{%s}")
+                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -50,6 +78,8 @@
       :m "j" 'evil-next-visual-line
       :m "k" 'evil-previous-visual-line)
 
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -84,7 +114,6 @@
 
 (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
 
-(require 'ivy-bibtex)
 
 (setq bibtex-completion-library-path '("~/org/bibliography"))
 (setq bibtex-completion-bibliography '("~/org/bibliography/references.bib"))
@@ -165,5 +194,6 @@
 (require 'alloy-mode)
 (add-to-list 'auto-mode-alist '("\\.als\\'" . alloy-mode))
 
+(setq exec-path (append exec-path '("~/.poetry/bin")))
 (provide 'config)
 ;;; config.el ends here
