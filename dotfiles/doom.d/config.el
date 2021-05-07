@@ -162,7 +162,7 @@
 
 * Scheduled
 * Journal
-* Fleeting :fleeting:
+* Fleeting
 ")))
 
 (add-hook 'go-mode-hook '(lambda ()
@@ -195,5 +195,13 @@
 (add-to-list 'auto-mode-alist '("\\.als\\'" . alloy-mode))
 
 (setq exec-path (append exec-path '("~/.poetry/bin")))
+(setq ispell-program-name "hunspell")
+(setq org-ref-bibliography-entry-format '(
+        ("article" . "%a, %t, <i>%j</i>, <b>%v(%n)</b>, %p (%y). <a href=\"%U\">link</a>. <a href=\"http://dx.doi.org/%D\">doi</a>.")
+        ("book" . "%a, %t, %u (%y).")
+        ("techreport" . "%a, %t, %i, %u (%y).")
+        ("proceedings" . "%e, %t %S, %u (%y).")
+        ("inproceedings" . "%a, %t, %p, %b"))
+)
 (provide 'config)
 ;;; config.el ends here
