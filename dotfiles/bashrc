@@ -85,6 +85,9 @@ fi
 if command -v rg > /dev/null; then
     alias grep='rg'
 fi
+if command -v fd > /dev/null; then
+    alias find='fd'
+fi
 alias la='ls -A'
 alias l='ls -CF'
 
