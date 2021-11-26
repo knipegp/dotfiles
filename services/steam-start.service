@@ -1,0 +1,11 @@
+[Unit]
+Description=Start steam on system boot
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/steam -tenfoot
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
