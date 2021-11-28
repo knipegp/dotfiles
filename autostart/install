@@ -1,0 +1,11 @@
+#!/bin/bash
+
+function install_desktop() {
+    local autostart_dir="$HOME"/.config/autostart
+    if [ ! -f "$autostart_dir"/"$1" ]; then
+        mkdir -p "$autostart_dir"
+        cp "$1" "$autostart_dir"/
+    fi
+}
+
+install_desktop "$1"
