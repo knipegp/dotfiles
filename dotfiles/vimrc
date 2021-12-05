@@ -1,22 +1,21 @@
 " fnamemodify from https://stackoverflow.com/a/18734557
-let script_dir = resolve(fnamemodify(resolve(expand('<sfile>:p')), ':h') . '/../vimscripts')
+let vim_scripts_dir = resolve(fnamemodify(resolve(expand('<sfile>:p')), ':h') . '/../vimscripts')
 
-function FileExists(file_path)
-   if filereadable(a:file_path)
-       return 1
-   endif
-   return 0
+execute 'source' . vim_scripts_dir . '/Utils.vim'
+
+call SourceIfExists(vim_scripts_dir, ['CommonPlugIns.vim'])
+
+" Return plugin installation directory for vim-plug
+function PlugInInstallDir()
+    if has('nvim')
+        return fnamemodify('~/.config/nvim/plugged', ':p')
+    else
+        return fnamemodify('~/.vim/plugged', ':p')
+    endif
 endfunction
 
-" let vim_plug_init = script_dir . '/VimPlugInit.vim'
-" if FileExists(vim_plug_init)
-"     execute 'source' . vim_plug_init
-" 	let add_on_script = g:script_dir . '/PlugIns.vim'
-" 	if FileExists(add_on_script)
-" 		execute 'source ' . add_on_script
-" 	endif
-" 
-" endif
+call InitCommonPlugIns(PlugInInstallDir())
+call ConfigCommonPlugIns(vim_scripts_dir, PlugInInstallDir())
 
 :set mouse=r
 syntax on
