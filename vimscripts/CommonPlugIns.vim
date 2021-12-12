@@ -4,7 +4,7 @@ function InitCommonPlugIns(plugin_install_dir)
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
     Plug 'preservim/nerdtree'
     Plug 'vim-airline/vim-airline'
-    Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 install.py --all' }
+    Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 install.py --clang-completer --go-completer --rust-completer' }
     Plug 'airblade/vim-gitgutter'
     Plug 'tpope/vim-fugitive'
 
