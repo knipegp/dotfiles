@@ -1,7 +1,7 @@
 function InitCommonPlugIns(plugin_install_dir)
     call plug#begin(a:plugin_install_dir)
 
-    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries \| go install github.com/segmentio/golines@latest' }
     Plug 'preservim/nerdtree'
     Plug 'vim-airline/vim-airline'
     Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 install.py --clang-completer --go-completer --rust-completer' }
