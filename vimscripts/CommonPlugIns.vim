@@ -7,6 +7,7 @@ function InitCommonPlugIns(plugin_install_dir)
     Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 install.py --clang-completer --go-completer --rust-completer' }
     Plug 'airblade/vim-gitgutter'
     Plug 'tpope/vim-fugitive'
+    Plug 'vimwiki/vimwiki'
 
     call plug#end()
 endfunction
@@ -29,6 +30,7 @@ function ConfigCommonPlugIns(vimscript_dir, plugin_install_dir)
         \['nerdtree', 'NerdTree.vim'],
         \['vim-go', 'VimGo.vim'],
         \['vim-airline', 'VimAirline.vim'],
+        \['vimwiki', 'VimWiki.vim'],
     \]
     call ConfigPlugIns(a:vimscript_dir, a:plugin_install_dir, install_path_script_pairs)
 endfunction
