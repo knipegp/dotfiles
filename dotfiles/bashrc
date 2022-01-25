@@ -91,6 +91,13 @@ fi
 if command -v nvim > /dev/null; then
     alias vim='nvim'
 fi
+function run_emacsclient() {
+    emacsclient -n "$@"
+}
+if command -v emacsclient > /dev/null; then
+    alias ec=run_emacsclient
+fi
+
 alias la='ls -A'
 alias l='ls -CF'
 

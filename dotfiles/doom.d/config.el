@@ -6,8 +6,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Griffin Knipe"
-      user-mail-address "knipegp@gmail.com")
+(setq user-full-name "Griffin Knipe" user-mail-address "knipegp@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -30,13 +29,23 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Documents/org/")
-(setq org-roam-directory (file-truename org-directory))
 (setq org-agenda-files (list org-directory))
-
+(setq org-roam-directory (file-truename org-directory))
+(setq org-roam-capture-templates '(("t" "todo" entry (file "./template_todo.org")
+                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                       "#+title: ${title}\n#+tags: todo")
+                                    :unnarrowed t)
+                                   ("e" "event" entry (file "./template_event.org")
+                                    :target(file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                      "#+title: ${title}\n#+tags: event"))
+                                   ("d" "default" plain "%?"
+                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                       "#+title: ${title}\n")
+                                    :unnarrowed t)))
+(add-hook 'emacs-lisp-mode-hook (load "elisp-format"))
 ;; this determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
-
+(setq display-line-numbers-type "relative")
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -54,3 +63,4 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+(server-start)
