@@ -7,3 +7,9 @@ if [ -f ~/.bashrc ]; then
     # shellcheck disable=SC1090
     source ~/.bashrc
 fi
+
+eval "$(gnome-keyring-daemon --start)"
+export SSH_AUTH_SOCK
+
+GPG_TTY=$(tty)
+export GPG_TTY
