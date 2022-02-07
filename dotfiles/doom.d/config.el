@@ -42,6 +42,23 @@
                                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                                        "#+title: ${title}\n")
                                     :unnarrowed t)))
+(setq org-inbox (concat org-directory "inbox.org"))
+(setq org-capture-templates '(("t" "Todo" entry (file+headline org-inbox "Tasks")
+                               "* TODO %?\n    %i\n")
+                              ("d" "default" entry (file+headline org-inbox "Notes")
+                               "* %?\n    %i\n")
+                              ("e" "event" entry (file+headline org-inbox "Events") "* %?\n
+%i\n")
+                              ("s" "source" entry (file+headline org-inbox "Sources") "* [ ] %? %^{location}p\n")))
+
+;; From: https://emacs.stackexchange.com/a/26120
+(defun add-property-with-date-captured ()
+  "Add DATE_CAPTURED property to the current item."
+  (interactive)
+  (org-set-property "date_captured" (format-time-string "%FT%T%z")))
+
+(add-hook 'org-capture-before-finalize-hook 'add-property-with-date-captured)
+
 (add-hook 'emacs-lisp-mode-hook (load "elisp-format"))
 ;; this determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.

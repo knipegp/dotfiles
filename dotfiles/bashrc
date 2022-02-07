@@ -127,14 +127,6 @@ export LESS_TERMCAP_so=$'\e[01;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
-wttr()
-{
-    # change Paris to your default location
-    local request="wttr.in/${1-Encinitas}"
-    [ "$(tput cols)" -lt 125 ] && request+='?n'
-    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
-}
-
 if [ -f "$HOME/.cargo/env" ]; then
     # shellcheck disable=SC1091
     . "$HOME/.cargo/env"
@@ -143,4 +135,12 @@ fi
 if [ -d "$HOME/.local/bin" ]; then
     # shellcheck disable=SC1091
     export PATH="$PATH":"$HOME"/.local/bin
+fi
+
+# From: https://wiki.archlinux.org/title/SSH_keys#SSH_agents
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+fi
+if [[ ! "$SSH_AUTH_SOCK" ]]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
 fi
