@@ -184,7 +184,3 @@ bar {
         position top
         font pango:DejaVu Sans Mono 10
 }
-input type:touchpad {
-    tap enabled
-    natural_scroll enabled
-}
