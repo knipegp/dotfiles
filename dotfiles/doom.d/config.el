@@ -49,7 +49,10 @@
                                "* %?\n    %i\n")
                               ("e" "event" entry (file+headline org-inbox "Events") "* %?\n
 %i\n")
-                              ("s" "source" entry (file+headline org-inbox "Sources") "* [ ] %? %^{location}p\n")))
+                              ("s" "source" entry (file+headline org-inbox "Sources")
+                               "* [ ] %? %^{location}p\n")
+                              ("c" "shopping cart" entry (file+headline org-inbox "Shopping Cart")
+                               "* [ ] %? %^{location}p\n%^{priority}p\n")))
 
 ;; From: https://emacs.stackexchange.com/a/26120
 (defun add-property-with-date-captured ()
@@ -62,7 +65,7 @@
 (add-hook 'emacs-lisp-mode-hook (load "elisp-format"))
 ;; this determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type "relative")
+(setq display-line-numbers-type 'relative)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

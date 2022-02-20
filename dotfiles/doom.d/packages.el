@@ -8,6 +8,7 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
+(package! elisp-format)
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
@@ -31,6 +32,10 @@
 ;; from Doom or MELPA/ELPA/Emacsmirror:
 ;(package! builtin-package :recipe (:nonrecursive t))
 ;(package! builtin-package-2 :recipe (:repo "myfork/package"))
+(unpin! poetry)
+(package! poetry
+  :recipe (:host github
+           :repo "knipegp/poetry.el"))
 
 ;; Specify a `:branch' to install a package from a particular branch or tag.
 ;; This is required for some packages whose default branch isn't 'master' (which
