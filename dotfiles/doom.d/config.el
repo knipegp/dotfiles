@@ -43,16 +43,18 @@
                                                        "#+title: ${title}\n")
                                     :unnarrowed t)))
 (setq org-inbox (concat org-directory "inbox.org"))
-(setq org-capture-templates '(("t" "Todo" entry (file+headline org-inbox "Tasks")
-                               "* TODO %?\n    %i\n")
-                              ("d" "default" entry (file+headline org-inbox "Notes")
-                               "* %?\n    %i\n")
-                              ("e" "event" entry (file+headline org-inbox "Events") "* %?\n
+(after! org
+  (setq org-capture-templates '(("t" "Todo" entry (file+headline org-inbox "Tasks")
+                                 "* TODO %?\n    %i\n")
+                                ("d" "default" entry (file+headline org-inbox "Notes")
+                                 "* %?\n    %i\n")
+                                ("e" "event" entry (file+headline org-inbox "Events") "* %?\n
 %i\n")
-                              ("s" "source" entry (file+headline org-inbox "Sources")
-                               "* [ ] %? %^{location}p\n")
-                              ("c" "shopping cart" entry (file+headline org-inbox "Shopping Cart")
-                               "* [ ] %? %^{location}p\n%^{priority}p\n")))
+                                ("s" "source" entry (file+headline org-inbox "Sources")
+                                 "* [ ] %? %^{location}p\n")
+                                ("c" "shopping cart" entry (file+headline org-inbox "Shopping Cart")
+                                 "* [ ] %? %^{location}p\n%^{priority}p\n"))))
+
 
 ;; From: https://emacs.stackexchange.com/a/26120
 (defun add-property-with-date-captured ()
