@@ -153,7 +153,7 @@ smart_borders on
 # Hide edge borders only if there is one window with no gaps
 hide_edge_borders smart_no_gaps
 
-default_border pixel 1
+default_border pixel 3
 
 for_window [title="Picture-in-Picture"] sticky enable
 exec --no-startup-id feh --randomize --bg-scale $HOME/Pictures/wallpaper/*

@@ -116,7 +116,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin
+export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin:$HOME/.poetry/bin
 
 # From: https://www.tecmint.com/view-colored-man-pages-in-linux/
 export LESS_TERMCAP_mb=$'\e[1;32m'
