@@ -51,11 +51,19 @@
                                 ("e" "event" entry (file+headline org-inbox "Events") "* %?\n
 %i\n")
                                 ("s" "source" entry (file+headline org-inbox "Sources")
-                                 "* [ ] %? %^{location}p\n")
+                                 "* TODO %? %^{location}p\n")
                                 ("c" "shopping cart" entry (file+headline org-inbox "Shopping Cart")
-                                 "* [ ] %? %^{location}p\n%^{priority}p\n"))))
-
-
+                                 "* TODO %? %^{location}p\n"))))
+(load "org-ql-search")
+(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO")
+                                                                             (tags "task"))
+                                                                       ((org-ql-block-header
+                                                                         "Tasks")))
+                                                         (org-ql-block '(and (todo "TODO")
+                                                                             (tags "shopping_cart"))
+                                                                       ((org-ql-block-header
+                                                                         "Shopping Cart")))
+                                                         (agenda)))))
 ;; From: https://emacs.stackexchange.com/a/26120
 (defun add-property-with-date-captured ()
   "Add DATE_CAPTURED property to the current item."
