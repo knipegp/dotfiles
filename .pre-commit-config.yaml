@@ -1,0 +1,17 @@
+---
+- repo: https://github.com/ansible-community/ansible-lint.git
+  rev: v6.5.2 # put latest release tag from https://github.com/ansible-community/ansible-lint/releases/
+  hooks:
+    - id: ansible-lint
+      args:
+        - gknipe/personal
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v2.3.0
+  hooks:
+    - id: check-yaml
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+- repo: https://github.com/psf/black
+  rev: 21.12b0
+  hooks:
+    - id: black

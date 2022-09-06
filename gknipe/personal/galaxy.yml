@@ -1,0 +1,8 @@
+---
+namespace: gknipe
+name: personal
+readme: README.md
+version: 0.1.0
+authors:
+  - "Griffin Knipe <knipegp@gmail.com>"
+description: Configuration for personal workstations.

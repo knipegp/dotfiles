@@ -25,7 +25,7 @@
 %%%			   than those for compatibility.  The major modifictions
 %%%			   are in the font selection commands in the option
 %%%			   files uct1x.clo.
-%%%			
+%%%
 %%%			   UCTHESIS.STY v2.7 is based on the standard
 %%%			   report.sty as modified by Mittelbach and Schopf in
 %%%			   Jan 1992.  The primary differences are (1) the use
@@ -49,7 +49,7 @@
 %%%
 %%%			   Version 2.3 includes a single-spaced
 %%%			   tabular* environment.
-%%%			
+%%%
 %%%			   Version 2.4 sets \evensidemargin correctly
 %%%			   for two-sided style.  It also adds new
 %%%			   environments (\smalltabular and
@@ -90,7 +90,7 @@
 %%%			   If you have such trouble, make small adjustments
 %%%			   to the \textwidth and \oddsidemargin
 %%%			   settings in your document preamble.
-%%%			
+%%%
 %%%			   Another problem some people have had is
 %%%			   that you can't use \pagestyle{headings}
 %%%			   and \markboth if you use \part.  The solution
@@ -514,7 +514,7 @@
             \hfill {\bf NUID:} \hspace{6pt} \@nuid \\[4pt]
 			{\bf Department:} & \@dept \\[4pt]
 		\end{tabular}
-  \end{minipage}      	
+  \end{minipage}
 	\vfill
 	\noindent
 	Approved for \expandafter{\@workType} Requirements of the \expandafter{\@degree} Degree
