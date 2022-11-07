@@ -1,0 +1,7 @@
+---
+- name: Install photo management applications
+  become: true
+  community.general.pacman:
+    name:
+      - digikam
+    state: present

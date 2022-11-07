@@ -1,9 +1,0 @@
----
-- name: Install packages
-  hosts: all
-  tasks:
-    - name: Install firefox
-      become: true
-      community.general.pacman:
-        name: firefox
-        state: present

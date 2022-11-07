@@ -1,0 +1,17 @@
+---
+- name: Install common window manager software
+  become: true
+  community.general.pacman:
+    name:
+      - displaycal
+      - caffeine-ng
+    state: present
+
+- name: Install i3-gaps related software
+  become: true
+  community.general.pacman:
+    name:
+      - i3-gaps
+      - bemenu
+      - feh
+      - dunst

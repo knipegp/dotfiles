@@ -1,0 +1,14 @@
+---
+- name: Run meta checks
+  hosts: all
+  tasks:
+    - name: Check for become password
+      become: true
+      ansible.builtin.debug:
+        msg: Pass
+
+- name: Install packages
+  hosts: all
+  roles:
+    - photo_manager
+    - runs_window_manager
