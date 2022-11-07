@@ -1,0 +1,9 @@
+---
+argument_specs:
+  main:
+    short_description: Install a window manager.
+    options:
+      window_manager_user:
+        type: str
+        required: true
+        description: The user for which the window manager is configured.

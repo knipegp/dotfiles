@@ -11,4 +11,8 @@
   hosts: all
   roles:
     - photo_manager
-    - runs_window_manager
+    - role: runs_window_manager
+      vars:
+        window_manager_user: griff
+      tags:
+        - install_window_manager

@@ -15,3 +15,49 @@
       - bemenu
       - feh
       - dunst
+
+- name: Get i3 config directory paths
+  ansible.builtin.set_fact:
+    i3_config_dir: "{{ ansible_user_dir }}/.config/i3"
+
+- name: Create i3 config directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ window_manager_user }}"
+    group: "{{ window_manager_user }}"
+    mode: '0755'
+  loop:
+    - "{{ i3_config_dir }}"
+    - "{{ i3_config_dir }}/config.d"
+
+- name: Install i3 config files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ window_manager_user }}"
+    group: "{{ window_manager_user }}"
+    mode: '0644'
+  loop:
+    - {src: files/config, dest: "{{ i3_config_dir }}/config"}
+    - {src: files/x11.conf, dest: "{{ i3_config_dir }}/config.d/x11.conf"}
+
+- name: Get i3status config directory paths
+  ansible.builtin.set_fact:
+    i3status_config_dir: "{{ ansible_user_dir }}/.config/i3status"
+
+- name: Create i3status config directory
+  ansible.builtin.file:
+    path: "{{ i3status_config_dir }}"
+    state: directory
+    owner: "{{ window_manager_user }}"
+    group: "{{ window_manager_user }}"
+    mode: '0755'
+
+- name: Install i3status config file
+  ansible.builtin.copy:
+    src: files/i3status_config
+    dest: "{{ i3status_config_dir }}/config"
+    owner: "{{ window_manager_user }}"
+    group: "{{ window_manager_user }}"
+    mode: '0644'
