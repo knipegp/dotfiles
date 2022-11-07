@@ -116,7 +116,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin:$HOME/.poetry/bin
+export PATH="$PATH":$HOME/go/bin:$HOME/.emacs.d/bin
 
 # From: https://www.tecmint.com/view-colored-man-pages-in-linux/
 export LESS_TERMCAP_mb=$'\e[1;32m'
@@ -137,13 +137,16 @@ if [ -d "$HOME/.local/bin" ]; then
     export PATH="$PATH":"$HOME"/.local/bin
 fi
 
+if [ -d "$HOME/.cargo/bin" ]; then
+    # shellcheck disable=SC1091
+    export PATH="$PATH":"$HOME"/.cargo/bin
+fi
+
 # From: https://wiki.archlinux.org/title/SSH_keys#SSH_agents
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     ssh-agent -t 4h > "$XDG_RUNTIME_DIR/ssh-agent.env"
 fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-fi
+source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
 
 if [[ ! "$GPG_TTY" ]]; then
     GPG_TTY=$(tty)

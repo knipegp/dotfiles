@@ -55,7 +55,7 @@
                                 ("c" "shopping cart" entry (file+headline org-inbox "Shopping Cart")
                                  "* TODO %? %^{location}p\n"))))
 (load "org-ql-search")
-(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO")
+(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO" "WAIT")
                                                                              (tags "task"))
                                                                        ((org-ql-block-header
                                                                          "Tasks")))
@@ -76,6 +76,8 @@
 ;; this determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
+(setq projectile-generic-command "fd . -0 --type f --color=never")
+(setq rst-pdf-program "okular")
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
