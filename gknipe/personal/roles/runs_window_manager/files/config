@@ -156,7 +156,6 @@ hide_edge_borders smart_no_gaps
 default_border pixel 3
 
 for_window [title="Picture-in-Picture"] sticky enable
-exec --no-startup-id feh --randomize --bg-scale $HOME/Pictures/wallpaper/*
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 

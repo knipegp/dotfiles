@@ -61,3 +61,39 @@
     owner: "{{ window_manager_user }}"
     group: "{{ window_manager_user }}"
     mode: '0644'
+
+- name: Set wallpaper installation directory
+  ansible.builtin.set_fact:
+    _window_manager_wallpaper_directory: /usr/share/wallpapers
+
+- name: Create wallpapers directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ _window_manager_wallpaper_directory }}"
+    state: directory
+    mode: '0755'
+
+- name: Add 1920x1080 wallpapers
+  become: true
+  block:
+    - name: Create 1920x1080 directory
+      ansible.builtin.file:
+        path: "{{ _window_manager_wallpaper_directory }}/1920_1080"
+        state: directory
+        mode: '0755'
+
+    - name: Download wallpaper at {{ item }}
+      ansible.builtin.get_url:
+        url: "{{ item }}"
+        dest: "{{ _window_manager_wallpaper_directory }}/1920_1080/"
+        mode: '0644'
+      loop:
+        - https://i.imgur.com/7mtcJ3S.jpeg
+
+- name: Install wallpaper i3 config template
+  ansible.builtin.template:
+    src: templates/feh.conf.j2
+    dest: "{{ i3_config_dir }}/config.d/feh.conf"
+    owner: "{{ window_manager_user }}"
+    group: "{{ window_manager_user }}"
+    mode: '0644'
