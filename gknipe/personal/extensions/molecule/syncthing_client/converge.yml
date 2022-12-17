@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: molecule
+  tasks:
+    - name: Test syncthing role
+      ansible.builtin.import_role:
+        name: gknipe.personal.syncthing_client
+      vars:
+        syncthing_client_user: root

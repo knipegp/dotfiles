@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: molecule
+  tasks:
+    - name: Set shell user
+      ansible.builtin.set_fact:
+        shell_user: root
+
+    - name: Test syncthing role
+      ansible.builtin.import_role:
+        name: gknipe.personal.emacs_editor
+      vars:
+        emacs_editor_user: root

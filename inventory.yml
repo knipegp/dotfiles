@@ -1,5 +1,5 @@
 ---
-workstations:
+workstation:
   hosts:
     lihue:
       ansible_connection: local
@@ -7,3 +7,16 @@ workstations:
     haleakala:
       ansible_connection: local
       ansible_python_interpreter: /usr/bin/env python
+      shell_user: griff
+
+developer_workstation:
+  children:
+    workstation: {}
+
+photography_workstation:
+  children:
+    workstation: {}
+
+openwrt:
+  hosts:
+    honolulu: {}

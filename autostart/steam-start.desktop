@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=steam
-Comment=Start steam on system boot
-Exec=/usr/bin/steam -tenfoot
-Terminal=false
-Type=Application

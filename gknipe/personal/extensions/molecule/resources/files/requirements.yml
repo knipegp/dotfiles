@@ -1,0 +1,8 @@
+---
+collections:
+  - containers.podman
+  # Relative to extensions directory from where the `molecule` command is run.
+  # It's pretty annoying but the local collection needs to be specified here
+  # even though it's present in the collections directory specified by
+  # ansible.cfg.
+  - ../../../gknipe/personal

@@ -1,0 +1,30 @@
+---
+- name: Get user info
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ shell_user }}"
+
+- name: Get user home directory
+  ansible.builtin.set_fact:
+    _user_home: "{{ ansible_facts.getent_passwd[shell_user][4] }}"
+
+- name: Bashrc directory
+  ansible.builtin.file:
+    path: "{{ (_user_home, '.bashrc.d') | path_join }}"
+    state: directory
+    mode: "0755"
+
+- name: Get RC runner
+  ansible.builtin.set_fact:
+    # (2023-08-28) This regex doesn't seem to be working but it shouldn't really
+    # break anything
+    _rc_block: >-
+      {{ lookup('ansible.builtin.file', 'run_rcs.sh')
+      | regex_replace('^#!.*$', '') }}
+
+- name: Install bashrc.d runner
+  ansible.builtin.blockinfile:
+    path: "{{ (_user_home, '.bashrc') | path_join }}"
+    block: "{{ _rc_block }}"
+    create: true
+    mode: "0644"
