@@ -1,0 +1,38 @@
+---
+- name: Run meta checks
+  hosts: all
+  tasks:
+    - name: Check for become password
+      become: true
+      ansible.builtin.debug:
+        msg: Pass
+
+- name: Install developer packages
+  hosts: developer_workstation
+  roles:
+    - role: gknipe.personal.power_tools
+      tags: power_tools
+      vars:
+        power_tools_user: griff
+
+    - role: gknipe.personal.emacs_editor
+      vars:
+        emacs_editor_user: griff
+      tags: emacs_editor
+
+- name: Install personal workstation utilities
+  hosts: all
+  roles:
+    - role: gknipe.personal.syncthing_client
+      vars:
+        syncthing_client_user: griff
+      tags: syncthing_client
+
+    - role: gknipe.personal.runs_window_manager
+      vars:
+        runs_window_manager_user: griff
+        runs_window_manager_wallpaper_directory: ~/.local/share/wallpapers
+      tags: runs_window_manager
+
+    - role: gknipe.personal.photo_manager
+      tags: photo_manager

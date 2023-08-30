@@ -1,4 +1,6 @@
-all: python poetry podman
+cache_dir := ./.ansible/collections/ansible_collections/gknipe
+
+all: podman controller
 
 become:
 	sudo -v
@@ -11,7 +13,14 @@ poetry: python
 	poetry install --no-root
 	pre-commit install
 
-podman:
-	sudo pacman -S --noconfirm --needed podman
+podman: become
+	sudo pacman -S --noconfirm --needed podman buildah
 
-.PHONY: python poetry
+controller: poetry
+	mkdir -p $(cache_dir)
+	ln -s gknipe/personal $(cache_dir)/personal
+
+clean:
+	rm -rf $(cache_dir)/personal
+
+.PHONY: python poetry controller clean

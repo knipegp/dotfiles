@@ -1,0 +1,24 @@
+---
+- name: Install Syncthing
+  become: true
+  block:
+    - name: Install with Pacman
+      when: ansible_distribution == "Archlinux"
+      community.general.pacman:
+        name:
+          - syncthing
+        state: present
+        update_cache: true
+    - name: Install with DNF
+      when: ansible_distribution == "Fedora"
+      ansible.builtin.dnf:
+        name:
+          - syncthing
+        state: present
+
+- name: Enable Syncthing service
+  become: true
+  ansible.builtin.systemd:
+    name: "syncthing@{{ syncthing_client_user }}"
+    state: started
+    enabled: true

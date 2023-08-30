@@ -1,0 +1,119 @@
+---
+- name: Install role dependencies
+  become: true
+  block:
+    - name: Install with Pacman
+      when: ansible_distribution == "Archlinux"
+      community.general.pacman:
+        name:
+          # base
+          - git
+          - ripgrep
+          - fd
+          # shell mode
+          - shfmt
+          - shellcheck
+          # lsp mode
+          - npm
+          # markdown mode
+          - pandoc
+          # org
+          - graphviz
+        state: present
+        update_cache: true
+
+    - name: Install with DNF
+      when: ansible_distribution == "Fedora"
+      ansible.builtin.dnf:
+        name:
+          - git
+          - ripgrep
+          - fd-find
+          - shfmt
+          - npm
+          - pandoc
+          - ShellCheck
+          - graphviz
+        state: present
+
+- name: Install Emacs
+  become: true
+  block:
+    - name: Install with Pacman
+      when: ansible_distribution == "Archlinux"
+      community.general.pacman:
+        name:
+          - emacs-wayland
+        state: present
+
+    - name: Install with DNF
+      when: ansible_distribution == "Fedora"
+      ansible.builtin.dnf:
+        name:
+          - emacs
+        state: present
+
+- name: Get user info
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ emacs_editor_user }}"
+
+- name: Get user home directory
+  ansible.builtin.set_fact:
+    _emacs_editor_user_home: >-
+      {{ ansible_facts.getent_passwd[emacs_editor_user][4] }}
+
+- name: Check if Doom Emacs is already installed
+  ansible.builtin.stat:
+    path: "{{ (_emacs_editor_user_home, '.config/doom') | path_join }}"
+  register: _doom_emacs_stat
+
+- name: Install Doom Emacs
+  when: not _doom_emacs_stat.stat.exists
+  block:
+    # - name: Create config directory
+    #   ansible.builtin.file:
+    #     path: "{{ (_emacs_editor_user_home, '.config') | path_join }}"
+    #     state: directory
+    #     mode: "0755"
+
+    - name: Download Doom Emacs
+      ansible.builtin.git:
+        repo: https://github.com/doomemacs/doomemacs
+        depth: 1
+        dest: "{{ (_emacs_editor_user_home, '.config/emacs') | path_join }}"
+        version: 7a75030
+
+    - name: Install Doom Emacs
+      ansible.builtin.command:
+        cmd: >-
+          {{ (_emacs_editor_user_home, '.config/emacs/bin/doom') | path_join }}
+          install --force
+      changed_when: true
+
+- name: Install config file {{ item }}
+  tags: dotfiles
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ (_emacs_editor_user_home, '.config/doom/', item) | path_join }}"
+    mode: '0644'
+  loop:
+    - init.el
+    - config.el
+    - custom.el
+    - template_todo.org
+    - packages.el
+
+- name: Sync Doom config
+  ansible.builtin.command:
+    cmd: >-
+      {{ (_emacs_editor_user_home, '.config/emacs/bin/doom') | path_join }}
+      sync
+  changed_when: true
+
+- name: Install Emacs shell extension
+  ansible.builtin.copy:
+    src: emacs_shell.sh
+    dest: >-
+      {{ (_emacs_editor_user_home, '.bashrc.d/emacs_shell.sh') | path_join }}
+    mode: "0644"

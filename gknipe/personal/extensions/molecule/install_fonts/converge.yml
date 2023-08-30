@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: molecule
+  tasks:
+    - name: Test install fonts role
+      ansible.builtin.import_role:
+        name: gknipe.personal.install_fonts
