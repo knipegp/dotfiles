@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
 
-function run_custom_rcs() {
-    local profile
-    local rcd
+# Copied from Fedora:36
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
 
-    rcd="${HOME}"/.bashrc.d
-
-    if test -d "${rcd}"; then
-        for profile in "${rcd}"/*.sh; do
-            # shellcheck source=/dev/null
-            test -r "${profile}" && . "${profile}"
-        done
-    fi
-}
-
-run_custom_rcs
+unset rc

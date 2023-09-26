@@ -13,11 +13,11 @@
     - role: gknipe.personal.power_tools
       tags: power_tools
       vars:
-        power_tools_user: griff
+        power_tools_user: "{{ user }}"
 
     - role: gknipe.personal.emacs_editor
       vars:
-        emacs_editor_user: griff
+        emacs_editor_user: "{{ user }}"
       tags: emacs_editor
 
 - name: Install personal workstation utilities
@@ -25,12 +25,12 @@
   roles:
     - role: gknipe.personal.syncthing_client
       vars:
-        syncthing_client_user: griff
+        syncthing_client_user: "{{ user }}"
       tags: syncthing_client
 
     - role: gknipe.personal.runs_window_manager
       vars:
-        runs_window_manager_user: griff
+        runs_window_manager_user: "{{ user }}"
         runs_window_manager_wallpaper_directory: ~/.local/share/wallpapers
       tags: runs_window_manager
 

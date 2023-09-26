@@ -13,11 +13,15 @@ install_poetry() {
 
 bootstrap_controller() {
     local poetry
+    local collection_install_path
 
     poetry=~/.local/bin/poetry
     "${poetry}" install --sync
     "${poetry}" run pre-commit install
-    "${poetry}" run ansible-galaxy collection install "$(dirname "${script_dir}")"/gknipe/personal
+    # "${poetry}" run ansible-galaxy collection install "$(dirname "${script_dir}")"/gknipe/personal
+    collection_install_path="$(dirname "${script_dir}")"/.ansible/collections/ansible_collections/gknipe/personal
+    mkdir -p "$(dirname "${collection_install_path}")"
+    ln -s "$(dirname "${script_dir}")"/gknipe/personal "${collection_install_path}"
 }
 
 main() {

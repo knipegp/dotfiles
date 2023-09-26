@@ -86,3 +86,9 @@
     src: power_tools.sh
     dest: "{{ (_user_home, '.bashrc.d/power_tools.sh') | path_join }}"
     mode: "0755"
+
+- name: Install Starship config
+  ansible.builtin.copy:
+    src: starship.toml
+    dest: "{{ (_user_home, '.config/starship.toml') | path_join }}"
+    mode: "0755"

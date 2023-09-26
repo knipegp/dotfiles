@@ -19,6 +19,8 @@
           - pandoc
           # org
           - graphviz
+          # restructured text
+          - rst2pdf
         state: present
         update_cache: true
 
@@ -34,6 +36,7 @@
           - pandoc
           - ShellCheck
           - graphviz
+          - rst2pdf
         state: present
 
 - name: Install Emacs
@@ -71,11 +74,16 @@
 - name: Install Doom Emacs
   when: not _doom_emacs_stat.stat.exists
   block:
-    # - name: Create config directory
-    #   ansible.builtin.file:
-    #     path: "{{ (_emacs_editor_user_home, '.config') | path_join }}"
-    #     state: directory
-    #     mode: "0755"
+    - name: Create config directory
+      ansible.builtin.file:
+        path: "{{ (_emacs_editor_user_home, '.config/doom') | path_join }}"
+        state: directory
+        mode: "0755"
+
+    - name: Delete legacy Emacs configuration directory
+      ansible.builtin.file:
+        path: "{{ (_emacs_editor_user_home, '.emacs.d') | path_join }}"
+        state: absent
 
     - name: Download Doom Emacs
       ansible.builtin.git:
@@ -91,7 +99,7 @@
           install --force
       changed_when: true
 
-- name: Install config file {{ item }}
+- name: Install config file
   tags: dotfiles
   ansible.builtin.copy:
     src: "{{ item }}"
