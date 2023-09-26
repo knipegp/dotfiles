@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-if [ -d "${HOME}/.local/bin" ]; then
+# User specific environment
+if [[ "$PATH" =~ ${HOME}/.local/bin && -d "${HOME}/.local/bin" ]]; then
     # shellcheck disable=SC1091
-    export PATH="${PATH}":"${HOME}"/.local/bin
+    PATH="${PATH}":"${HOME}"/.local/bin
 fi
+export PATH
 
 # From: https://wiki.archlinux.org/title/SSH_keys#SSH_agents
 if ! pgrep -u "${USER}" ssh-agent >/dev/null; then
@@ -19,3 +21,10 @@ if [[ ! "${GPG_TTY}" ]]; then
 fi
 
 eval "$(starship init bash)"
+
+function git-clean-branches() {
+    git branch --merged |
+        grep -Ev "(^\*|master|main|dev)" |
+        xargs -r git branch -d
+    git remote prune origin
+}

@@ -7,7 +7,13 @@ workstation:
     haleakala:
       ansible_connection: local
       ansible_python_interpreter: /usr/bin/env python
+      user: griff
       shell_user: griff
+    makawao:
+      ansible_connection: local
+      ansible_python_interpreter: /usr/bin/env python
+      user: gknipe
+      shell_user: gknipe
 
 developer_workstation:
   children:

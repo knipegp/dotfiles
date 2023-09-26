@@ -10,8 +10,9 @@
   tasks:
     # podman run -d --rm --name Manjaro docker.io/manjarolinux/base sleep 1d
     # podman exec Manjaro pacman -S --asexplicit --noconfirm base
-    # podman base-working-container knipegp/manjarolinux
+    # podman commit Manjaro knipegp/manjarolinux
     #
+    # podman run -d --rm --name Fedora fedora:36 sleep 1d
     # buildah from fedora:36
     # buildah run fedora-working-container -- dnf install systemd
     # buildah commit fedora-working-container knipegp/fedora:36

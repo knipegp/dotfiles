@@ -11,7 +11,12 @@
           - swaybg
           - ly
           - xorg-xwayland
-          # - dunst
+          - dunst
+          # screenshot
+          # how do i call this from bemenu? `slurp | grim -g - - | wl-copy`
+          - grim
+          - wl-clipboard
+          - slurp
         state: present
         update_cache: true
 
@@ -23,7 +28,10 @@
           - bemenu
           - swaybg
           - xorg-x11-server-Xwayland
-          # - dunst
+          - dunst
+          - grim
+          - wl-clipboard
+          - slurp
         state: present
 
 
