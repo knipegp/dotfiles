@@ -21,6 +21,8 @@
           - graphviz
           # restructured text
           - rst2pdf
+          # python
+          - python-black
         state: present
         update_cache: true
 

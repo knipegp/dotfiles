@@ -55,7 +55,7 @@
                                 ("c" "shopping cart" entry (file+headline org-inbox "Shopping Cart")
                                  "* TODO %? %^{location}p\n"))))
 (load "org-ql-search")
-(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO" "WAIT")
+(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO")
                                                                              (tags "task"))
                                                                        ((org-ql-block-header
                                                                          "Tasks")))

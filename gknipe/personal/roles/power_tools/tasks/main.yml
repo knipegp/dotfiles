@@ -72,7 +72,7 @@
     power_tools_user_home: "{{ _user_home }}"
     source: "{{ item.src }}"
     destination: "{{ item.dest }}"
-  loop: "{{ power_tool_dotfile_locations }}"
+  loop: "{{ power_tools_dotfile_locations }}"
 
 
 - name: Set Nvim as git editor

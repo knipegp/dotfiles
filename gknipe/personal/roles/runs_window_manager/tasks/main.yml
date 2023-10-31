@@ -17,6 +17,8 @@
           - grim
           - wl-clipboard
           - slurp
+          - udiskie
+          - waybar
         state: present
         update_cache: true
 
@@ -32,6 +34,8 @@
           - grim
           - wl-clipboard
           - slurp
+          - udiskie
+          - waybar
         state: present
 
 
@@ -62,6 +66,8 @@
       dest: "{{ sway_config_dir }}/config"
     - src: files/wayland.conf
       dest: "{{ sway_config_dir }}/config.d/walyand.conf"
+    - src: files/udiskie.conf
+      dest: "{{ sway_config_dir }}/config.d/udiskie.conf"
 
 - name: Install ly
   when: ansible_distribution == "Archlinux"
@@ -117,3 +123,26 @@
     mode: '0644'
   loop:
     - https://i.imgur.com/7mtcJ3S.jpeg
+
+- name: Install Spotify
+  block:
+    - name: Install Flatpak
+      become: true
+      block:
+        - name: Install with pacman
+          when: ansible_distribution == "Archlinux"
+          community.general.pacman:
+            name: flatpak
+            state: present
+
+        - name: Install with DNF
+          when: ansible_distribution == "Fedora"
+          ansible.builtin.dnf:
+            name: flatpak
+            state: present
+
+    - name: Install from Flathub
+      when: (ansible_connection | default(null)) != "containers.podman.podman"
+      community.general.flatpak:
+        name: com.spotify.Client
+        state: present
