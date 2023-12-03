@@ -8,6 +8,7 @@
         name:
           - darktable
           - portmidi  # darktable optional dependency required to open the app
+          - signal-desktop
         state: present
         update_cache: true
 

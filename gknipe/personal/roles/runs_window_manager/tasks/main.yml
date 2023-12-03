@@ -7,6 +7,7 @@
       community.general.pacman:
         name:
           - sway
+          - swaylock
           - bemenu-wayland
           - swaybg
           - ly
@@ -19,6 +20,8 @@
           - slurp
           - udiskie
           - waybar
+          - otf-font-awesome  # waybar requirement
+          - brightnessctl  # needed for laptop brightness control
         state: present
         update_cache: true
 
@@ -68,6 +71,8 @@
       dest: "{{ sway_config_dir }}/config.d/walyand.conf"
     - src: files/udiskie.conf
       dest: "{{ sway_config_dir }}/config.d/udiskie.conf"
+    - src: files/laptop.conf
+      dest: "{{ sway_config_dir }}/config.d/laptop.conf"
 
 - name: Install ly
   when: ansible_distribution == "Archlinux"
