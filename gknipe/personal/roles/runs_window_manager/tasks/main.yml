@@ -7,6 +7,7 @@
       community.general.pacman:
         name:
           - sway
+          - swaylock
           - bemenu-wayland
           - swaybg
           - ly
@@ -17,6 +18,10 @@
           - grim
           - wl-clipboard
           - slurp
+          - udiskie
+          - waybar
+          - otf-font-awesome  # waybar requirement
+          - brightnessctl  # needed for laptop brightness control
         state: present
         update_cache: true
 
@@ -32,6 +37,8 @@
           - grim
           - wl-clipboard
           - slurp
+          - udiskie
+          - waybar
         state: present
 
 
@@ -62,6 +69,20 @@
       dest: "{{ sway_config_dir }}/config"
     - src: files/wayland.conf
       dest: "{{ sway_config_dir }}/config.d/walyand.conf"
+    - src: files/udiskie.conf
+      dest: "{{ sway_config_dir }}/config.d/udiskie.conf"
+
+- name: Install sway config files for laptop
+  when: is_laptop
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ runs_window_manager_user }}"
+    group: "{{ runs_window_manager_user }}"
+    mode: '0644'
+  loop:
+    - src: files/laptop.conf
+      dest: "{{ sway_config_dir }}/config.d/laptop.conf"
 
 - name: Install ly
   when: ansible_distribution == "Archlinux"
@@ -117,3 +138,30 @@
     mode: '0644'
   loop:
     - https://i.imgur.com/7mtcJ3S.jpeg
+
+- name: Install Spotify
+  block:
+    - name: Install Snap
+      become: true
+      block:
+        - name: Install with pacman
+          when: ansible_distribution == "Archlinux"
+          community.general.pacman:
+            name: snapd
+            state: present
+
+    - name: Install from Snapcraft
+      when: (ansible_connection | default(null)) != "containers.podman.podman"
+      community.general.snap:
+        name: spotify
+
+- name: Install miscellaneous software
+  become: true
+  block:
+    - name: Install with Pacman
+      when: ansible_distribution == "Archlinux"
+      community.general.pacman:
+        name:
+          - libreoffice-still
+        state: present
+        update_cache: true

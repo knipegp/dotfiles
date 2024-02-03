@@ -11,7 +11,7 @@ ansible = "^8.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pip-audit = "^2.6.1"
-ansible-lint = { version = "^6.5.2", markers = "platform_system != 'Windows'" }
+ansible-lint = { version = "^6.21.0", markers = "platform_system != 'Windows'" }
 pre-commit = "^3.0.0"
 molecule = "^6.0.1"
 tox = "^4.11.0"

@@ -72,7 +72,7 @@
     power_tools_user_home: "{{ _user_home }}"
     source: "{{ item.src }}"
     destination: "{{ item.dest }}"
-  loop: "{{ power_tool_dotfile_locations }}"
+  loop: "{{ power_tools_dotfile_locations }}"
 
 
 - name: Set Nvim as git editor
@@ -80,6 +80,42 @@
     name: core.editor
     scope: global
     value: nvim
+
+- name: Git delta pager
+  community.general.git_config:
+    name: core.pager
+    scope: global
+    value: delta
+
+- name: Git delta interactive
+  community.general.git_config:
+    name: interactive.diffFilter
+    scope: global
+    value: delta --color-only
+
+- name: Git delta navigate
+  community.general.git_config:
+    name: delta.navigate
+    scope: global
+    value: true
+
+- name: Git delta light
+  community.general.git_config:
+    name: delta.light
+    scope: global
+    value: false
+
+- name: Git delta merge style
+  community.general.git_config:
+    name: merge.conflictstyle
+    scope: global
+    value: diff3
+
+- name: Git delta diff style
+  community.general.git_config:
+    name: diff.colorMoved
+    scope: global
+    value: default
 
 - name: Install shell extensions
   ansible.builtin.copy:

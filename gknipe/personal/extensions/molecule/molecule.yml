@@ -17,7 +17,7 @@ provisioner:
     create: ../resources/playbooks/create.yml
     destroy: ../resources/playbooks/destroy.yml
 platforms:
-  - name: Fedora
-    image: knipegp/fedora:36
+  # - name: Fedora
+  #   image: knipegp/fedora:36
   - name: Manjaro
     image: knipegp/manjarolinux:latest

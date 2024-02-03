@@ -20,6 +20,9 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+(setq doom-font (font-spec :family "Fira Code Nerd Font" :size 14))
+(setq doom-variable-pitch-font (font-spec :family "Fira Code Nerd Font" :size 14))
+(setq doom-big-font (font-spec :family "Fira Code Nerd Font" :size 24))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -31,38 +34,24 @@
 (setq org-directory "~/Org/")
 (setq org-agenda-files (list org-directory))
 (setq org-roam-directory (file-truename org-directory))
-;; (setq org-roam-capture-templates '(("t" "todo" entry (file "./template_todo.org")
-;;                                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-;;                                                        "#+title: ${title}\n#+tags: todo")
-;;                                     :unnarrowed t)
-;;                                    ("e" "event" entry (file "./template_event.org")
-;;                                     :target(file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-;;                                                       "#+title: ${title}\n#+tags: event"))
-;;                                    ("d" "default" plain "%?"
-;;                                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-;;                                                        "#+title: ${title}\n")
-;;                                     :unnarrowed t)))
 (setq org-inbox (concat org-directory "inbox.org"))
-(after! org
-  (setq org-capture-templates '(("t" "Todo" entry (file+headline org-inbox "Tasks")
-                                 "* TODO %?\n    %i\n")
-                                ("d" "default" entry (file+headline org-inbox "Notes")
-                                 "* %?\n    %i\n")
-                                ("e" "event" entry (file+headline org-inbox "Events") "* %?\n
-%i\n")
-                                ("s" "source" entry (file+headline org-inbox "Sources")
-                                 "* TODO %? %^{location}p\n")
-                                ("c" "shopping cart" entry (file+headline org-inbox "Shopping Cart")
-                                 "* TODO %? %^{location}p\n"))))
 (load "org-ql-search")
-(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO" "WAIT")
+(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO")
                                                                              (tags "task"))
                                                                        ((org-ql-block-header
                                                                          "Tasks")))
                                                          (org-ql-block '(and (todo "TODO")
+                                                                             (tags "readme"))
+                                                                       ((org-ql-block-header
+                                                                         "README")))
+                                                         (org-ql-block '(and (todo "TODO")
                                                                              (tags "shopping_cart"))
                                                                        ((org-ql-block-header
                                                                          "Shopping Cart")))
+                                                         (org-ql-block '(and (or (todo "TODO") (todo "WAIT"))
+                                                                             (tags "hobby"))
+                                                                       ((org-ql-block-header
+                                                                         "Hobby")))
                                                          (agenda)))))
 ;; From: https://emacs.stackexchange.com/a/26120
 (defun add-property-with-date-captured ()
@@ -96,5 +85,5 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (server-start)
-(add-to-list 'default-frame-alist '(font . "Fira Code" ))
-(set-face-attribute 'default t :font "Fira Code" )
+;; (add-to-list 'default-frame-alist '(font . "Fira Code" ))
+;; (set-face-attribute 'default t :font "Fira Code" )
