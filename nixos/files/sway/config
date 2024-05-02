@@ -9,7 +9,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod4
+set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -179,3 +179,5 @@ bindsym $mod+0 mode "$mode_system"
 # Read `man 5 sway-bar` for more information about this section.
 bar swaybar_command waybar
 include /etc/sway/config.d/*
+
+exec wpaperd
