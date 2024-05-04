@@ -2,14 +2,22 @@
 G's System Config
 =================
 
-Let's do this with Ansible
---------------------------
+Use NixOS to organize personal system configuration.
 
-`ansible-lint <https://github.com/ansible/ansible-lint>`_
-`ansible-bender <https://github.com/ansible-community/ansible-bender>`_
-`podman <https://podman.io/>`_
-`buildah <https://github.com/containers/buildah>`_
+Boot-strapping steps.
 
-* Add ``pacman -S go-yq`` to developer role
-* Add ``npm`` install
-  * https://github.com/nvm-sh/nvm#installing-and-updating
+#. Create new directory in ``hosts``
+#. Create a new ``flake.nix`` in that directory
+#. Ensure ``hosts/home.nix`` sources desired modules
+#. Copy ``/etc/nixos/hardware-configuration.nix`` to that directory
+
+.. code-block:: bash
+
+    sudo nixos-rebuild switch --flake <dotfiles-path>/nixos/#<hostname>
+
+.. code-block:: bash
+
+    nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager
+    nix-channel --update
+    nix-shell '<home-manager>' -A install
+    home-manager -v switch -b backup --flake <dotfiles-path>/nixos/home-manager/
