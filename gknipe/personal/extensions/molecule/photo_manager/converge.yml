@@ -1,7 +1,0 @@
----
-- name: Converge
-  hosts: molecule
-  tasks:
-    - name: Test photo manager role
-      ansible.builtin.import_role:
-        name: gknipe.personal.photo_manager

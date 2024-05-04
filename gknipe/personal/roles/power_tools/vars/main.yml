@@ -1,8 +1,0 @@
----
-power_tools_dotfile_locations:
-  - name: Alacritty
-    src: alacritty.yml
-    dest: .config/alacritty/alacritty.yml
-  - name: Neovim
-    src: vimrc
-    dest: .config/nvim/init.vim

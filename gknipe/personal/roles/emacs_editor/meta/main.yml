@@ -1,4 +1,0 @@
----
-dependencies:
-  - role: gknipe.personal.install_fonts
-  - role: gknipe.personal.shell
