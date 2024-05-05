@@ -5,8 +5,8 @@
     emacs29
     librewolf
     alacritty
-    # spotify
-    # signal-desktop
+    spotify
+    signal-desktop
     parted
 
     # Photo editing
@@ -16,6 +16,7 @@
     waybar
     font-awesome
     wpaperd
+    brightnessctl
   ];
 
   home.file = {

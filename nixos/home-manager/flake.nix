@@ -20,10 +20,13 @@
 
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
-        modules = [ ./home.nix ./base.nix ./graphical.nix ];
+        modules = [
+          ./home.nix
+          ../modules/development-user.nix
+          ../modules/desktop-user.nix
+          ../modules/personal.nix
+        ];
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
       };
     };
 }

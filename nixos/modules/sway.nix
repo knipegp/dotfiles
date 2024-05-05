@@ -39,17 +39,16 @@ let
     '';
   };
 
-in
-{
+in {
   environment.systemPackages = with pkgs; [
-    dbus   # make dbus-update-activation-environment available in the path
+    dbus # make dbus-update-activation-environment available in the path
     dbus-sway-environment
     configure-gtk
     wayland
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
     dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme  # default gnome cursors
+    gnome3.adwaita-icon-theme # default gnome cursors
     swaylock
     swayidle
     grim # screenshot functionality
@@ -58,6 +57,7 @@ in
     bemenu # wayland clone of dmenu
     mako # notification system developed by swaywm maintainer
     wdisplays # tool to configure displays
+    alsa-utils # provides amixer to control volume
   ];
 
   services.pipewire = {
@@ -83,7 +83,6 @@ in
   # Enable the gnome-keyrig secrets vault. 
   # Will be exposed through DBus to programs willing to store secrets.
   services.gnome.gnome-keyring.enable = true;
-
 
   # enable sway window manager
   programs.sway = {

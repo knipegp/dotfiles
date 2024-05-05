@@ -11,11 +11,19 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
-    nixosConfigurations.haleakala = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
-      modules = [
-        ./hosts/haleakala/configuration.nix
-      ];
+    nixosConfigurations = {
+      haleakala = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/haleakala/configuration.nix
+        ];
+      };
+      lihue = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/lihue/configuration.nix
+        ];
+      };
     };
   };
 }
