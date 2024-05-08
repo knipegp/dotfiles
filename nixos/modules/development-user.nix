@@ -36,6 +36,7 @@ in {
       # Dev tools
       tokei
       gnupg
+      openssh # ssg-agent
 
       # Emacs
       python312
@@ -52,6 +53,9 @@ in {
       nixfmt-classic
 
       rstfmt
+
+      # User tools
+      udiskie
     ];
     services.udiskie = {
       enable = true;
@@ -82,8 +86,16 @@ in {
         if [ -d "''${HOME}/.config/emacs/bin" ]; then
             export PATH="''${PATH}":"''${HOME}/.config/emacs/bin"
         fi
+
+        if [[ -z "$SSH_AUTH_SOCK" ]]; then
+          export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent
+        fi
       '';
     };
+
+    # Update path for bash profile
+    home.sessionPath = [ "$HOME/.config/emacs/bin" ];
+
     programs.starship.enable = true;
 
     programs.neovim = {
@@ -97,7 +109,6 @@ in {
     home.file = {
       "${config.home.homeDirectory}/.vimrc" = { source = ../files/vim/vimrc; };
     };
-    services.ssh-agent.enable = true;
   };
 
 }

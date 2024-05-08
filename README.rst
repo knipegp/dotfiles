@@ -20,4 +20,8 @@ Boot-strapping steps.
     nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager
     nix-channel --update
     nix-shell '<home-manager>' -A install
-    home-manager -v switch -b backup --flake <dotfiles-path>/nixos/home-manager/
+    # Run from the directory containing the home manager flake.
+    # Not sure how to do this with a relative path yet.
+    home-manager -v switch -b backup --flake .
+
+Manually install Doom Emacs.

@@ -4,6 +4,8 @@
   home.packages = with pkgs; [
     emacs29
     librewolf
+    # Use firefox for persistently logged on accounts
+    firefox
     alacritty
     spotify
     signal-desktop
@@ -44,5 +46,4 @@
     };
   };
 
-  home.sessionPath = [ "$HOME/.config/emacs/bin" ];
 }
