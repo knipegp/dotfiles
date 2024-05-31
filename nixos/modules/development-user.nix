@@ -9,7 +9,7 @@ in {
       description = "username";
     };
     email = lib.mkOption {
-      default = "knipegp@gmail.com";
+      default = "knipegp@proton.me";
       description = "email";
     };
   };
@@ -70,6 +70,8 @@ in {
       userEmail = cfg.email;
       difftastic.enable = true;
       extraConfig = { core.editor = "nvim"; };
+      signing.signByDefault = true;
+      signing.key = null;
     };
 
     programs.bash = {
