@@ -8,7 +8,7 @@
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/system_desktop.nix
-    ../../modules/sway.nix
+    ../../modules/hyprland.nix
   ];
 
   # Bootloader.
@@ -41,12 +41,6 @@
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
-  };
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

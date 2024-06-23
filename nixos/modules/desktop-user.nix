@@ -3,10 +3,11 @@
 {
   home.packages = with pkgs; [
     emacs29
+    discord
     librewolf
     # Use firefox for persistently logged on accounts
     firefox
-    alacritty
+    kitty
     spotify
     signal-desktop
     parted
@@ -19,6 +20,18 @@
     font-awesome
     wpaperd
     brightnessctl
+
+    # Hyprland
+    mako
+    wofi
+    waybar
+    killall
+    wpaperd
+    font-awesome
+    hyprlock
+    grim # screenshot functionality
+    slurp # screenshot functionality
+    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
   ];
 
   home.file = {
@@ -26,14 +39,28 @@
       source = ../files/doom;
       recursive = true;
     };
-    "${config.xdg.configHome}/sway" = {
-      source = ../files/sway;
+    # "${config.xdg.configHome}/sway" = {
+    #   source = ../files/sway;
+    #   recursive = true;
+    #   onChange = "${pkgs.sway}/bin/swaymsg reload";
+    # };
+    "${config.xdg.configHome}/hypr" = {
+      source = ../files/hyprland;
       recursive = true;
-      onChange = "${pkgs.sway}/bin/swaymsg reload";
+      onChange = "${pkgs.hyprland}/bin/hyprctl reload";
     };
-    "${config.xdg.configHome}/alacritty/alacritty.toml" = {
-      source = ../files/alacritty/alacritty.toml;
+    "${config.xdg.configHome}/waybar" = {
+      source = ../files/waybar;
+      recursive = true;
+      onChange = "${pkgs.killall}/bin/killall -SIGUSR2 .waybar-wrapped";
     };
+    "${config.xdg.configHome}/waybar/scripts" = {
+      source = ../files/waybar/scripts;
+      recursive = true;
+    };
+    # "${config.xdg.configHome}/alacritty/alacritty.toml" = {
+    #   source = ../files/alacritty/alacritty.toml;
+    # };
     "${config.xdg.configHome}/wpaperd/wallpaper.toml" = {
       source = ../files/wpaperd/wallpaper.toml;
     };
