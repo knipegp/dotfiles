@@ -8,7 +8,7 @@
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/system_desktop.nix
-    ../../modules/sway.nix
+    ../../modules/hyprland.nix
   ];
 
   # Bootloader.
@@ -45,12 +45,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.griff = {
     isNormalUser = true;
@@ -73,10 +67,10 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-gtk2;
+  };
 
   # List services that you want to enable:
 

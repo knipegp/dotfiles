@@ -2,7 +2,7 @@
 
 {
   home.packages = with pkgs; [
-    emacs29
+    emacs29-pgtk
     discord
     librewolf
     # Use firefox for persistently logged on accounts
@@ -61,6 +61,9 @@
     # "${config.xdg.configHome}/alacritty/alacritty.toml" = {
     #   source = ../files/alacritty/alacritty.toml;
     # };
+    "${config.xdg.configHome}/kitty/kitty.conf" = {
+      source = ../files/kitty/kitty.conf;
+    };
     "${config.xdg.configHome}/wpaperd/wallpaper.toml" = {
       source = ../files/wpaperd/wallpaper.toml;
     };

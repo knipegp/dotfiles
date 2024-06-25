@@ -41,6 +41,7 @@ let
 in {
 
   programs.hyprland.enable = true;
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   environment.systemPackages = with pkgs; [
     wayland
@@ -51,6 +52,7 @@ in {
     glib # gsettings
     dracula-theme # gtk theme
     gnome3.adwaita-icon-theme # default gnome cursors
+    alsa-utils # provides amixer to control volume
   ];
 
   services.pipewire = {
