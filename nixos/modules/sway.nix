@@ -48,7 +48,7 @@ in {
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
     dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme # default gnome cursors
+    adwaita-icon-theme # default gnome cursors
     swaylock
     swayidle
     grim # screenshot functionality
@@ -60,10 +60,16 @@ in {
     alsa-utils # provides amixer to control volume
   ];
 
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
+  services = {
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      pulse.enable = true;
+    };
+    dbus.enable = true;
+    # Enable the gnome-keyrig secrets vault.
+    # Will be exposed through DBus to programs willing to store secrets.
+    gnome.gnome-keyring.enable = true;
   };
 
   # xdg-desktop-portal works by exposing a series of D-Bus interfaces
@@ -72,17 +78,12 @@ in {
   # (/org/freedesktop/portal/desktop).
   # The portal interfaces include APIs for file access, opening URIs,
   # printing and others.
-  services.dbus.enable = true;
   xdg.portal = {
     enable = true;
     wlr.enable = true;
     # gtk portal needed to make gtk apps happy
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
-
-  # Enable the gnome-keyrig secrets vault. 
-  # Will be exposed through DBus to programs willing to store secrets.
-  services.gnome.gnome-keyring.enable = true;
 
   # enable sway window manager
   programs.sway = {

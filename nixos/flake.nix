@@ -24,6 +24,12 @@
           ./hosts/lihue/configuration.nix
         ];
       };
+      lahaina = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/lahaina/configuration.nix
+        ];
+      };
     };
   };
 }
