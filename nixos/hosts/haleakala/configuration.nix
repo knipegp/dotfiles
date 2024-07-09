@@ -9,6 +9,7 @@
     ./hardware-configuration.nix
     ../../modules/system_desktop.nix
     ../../modules/hyprland.nix
+    ../../modules/sshd.nix
   ];
 
   # Bootloader.
