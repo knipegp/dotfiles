@@ -6,7 +6,9 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Griffin Knipe" user-mail-address "knipegp@proton.me")
+(setq
+ user-full-name "Griffin Knipe"
+ user-mail-address "knipegp@proton.me")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -21,7 +23,8 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 (setq doom-font (font-spec :family "Fira Code Nerd Font" :size 14))
-(setq doom-variable-pitch-font (font-spec :family "Fira Code Nerd Font" :size 14))
+(setq doom-variable-pitch-font
+      (font-spec :family "Fira Code Nerd Font" :size 14))
 (setq doom-big-font (font-spec :family "Fira Code Nerd Font" :size 24))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -36,23 +39,42 @@
 (setq org-roam-directory (file-truename org-directory))
 (setq org-inbox (concat org-directory "inbox.org"))
 (load "org-ql-search")
-(setq org-agenda-custom-commands '(("c" "Custom Agenda" ((org-ql-block '(and (todo "TODO")
-                                                                             (tags "task"))
-                                                                       ((org-ql-block-header
-                                                                         "Tasks")))
-                                                         (org-ql-block '(and (todo "TODO")
-                                                                             (tags "readme"))
-                                                                       ((org-ql-block-header
-                                                                         "README")))
-                                                         (org-ql-block '(and (todo "TODO")
-                                                                             (tags "shopping_cart"))
-                                                                       ((org-ql-block-header
-                                                                         "Shopping Cart")))
-                                                         (org-ql-block '(and (or (todo "TODO") (todo "WAIT"))
-                                                                             (tags "hobby"))
-                                                                       ((org-ql-block-header
-                                                                         "Hobby")))
-                                                         (agenda)))))
+(setq org-agenda-custom-commands
+      '(("c" "Custom Agenda"
+         ((org-ql-block '((tags "inbox") :header "Inbox"))
+          (org-ql-block
+           '((and (todo "TODO")
+                  (tags "recurring")
+                  (planning 0)
+                  )
+             :header "Recurring"
+             :sort (date priority)))
+          (org-ql-block
+           '((and (todo "TODO")
+                  (tags "task")
+                  (not (tags "recurring"))
+                  (or (planning 30) (not (planning))))
+             :header "Tasks"
+             :sort (date priority)))
+          (org-ql-block
+           '((and (todo "TODO")
+                  (tags "readme")
+                  (or (planning 30) (not (planning))))
+             :header "README"
+             :sort (date priority)))
+          (org-ql-block
+           '((and (todo "TODO")
+                  (tags "shopping_cart")
+                  (or (planning 30) (not (planning))))
+             :header "Shopping Cart"
+             :sort (date priority)))
+          (org-ql-block
+           '((and (or (todo "TODO") (todo "WAIT"))
+                  (tags "hobby")
+                  (or (planning 30) (not (planning))))
+             :header "Hobby"
+             :sort (date priority)))
+          (agenda)))))
 ;; From: https://emacs.stackexchange.com/a/26120
 (defun add-property-with-date-captured ()
   "Add DATE_CAPTURED property to the current item."
@@ -61,7 +83,6 @@
 
 (add-hook 'org-capture-before-finalize-hook 'add-property-with-date-captured)
 
-(add-hook 'emacs-lisp-mode-hook (load "elisp-format"))
 ;; this determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)

@@ -8,12 +8,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, nixpkgs-stable, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
     in {
       homeConfigurations."griff" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
@@ -22,9 +24,12 @@
         # the path to your home.nix.
         modules = [
           ./home.nix
-          ../modules/development-user.nix
-          ../modules/desktop-user.nix
-          ../modules/personal.nix
+          ../modules/user/development.nix
+          ../modules/user/desktop.nix
+          { _module.args = { inherit pkgs-stable; }; }
+          ../modules/user/personal.nix
+          ../modules/user/desktop-development.nix
+          ../modules/user/gnupg.nix
         ];
 
       };
