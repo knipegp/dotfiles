@@ -1,4 +1,4 @@
-{ _ }:
+{ ... }:
 
 {
   services.immich.accelerationDevices = null;

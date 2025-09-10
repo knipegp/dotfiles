@@ -1,7 +1,14 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
-let cfg = config.development-user;
-in {
+let
+  cfg = config.development-user;
+in
+{
   options.development-user = {
     fullName = lib.mkOption {
       default = "Griffin Knipe";
@@ -12,6 +19,7 @@ in {
       description = "email";
     };
   };
+  imports = [ ../../modules/user/python-dev.nix ];
   config = {
     home.packages = with pkgs; [
       # Basic terminal tools
@@ -36,10 +44,6 @@ in {
       # Dev tools
       tokei
       openssh
-
-      # Python
-      python312
-      uv
 
       # nix
       nil
@@ -143,9 +147,9 @@ in {
               export PATH="''${PATH}":"''${HOME}/.config/emacs/bin"
           fi
 
-          # Allow applications to locate shared libraries. For example, jupyter
-          # notebook needs to locate libstdc++.so.6.
-          # export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib"
+          if [ -d "''${HOME}/.local/bin" ]; then
+              export PATH="''${PATH}":"''${HOME}/.local/bin"
+          fi
         '';
       };
     };

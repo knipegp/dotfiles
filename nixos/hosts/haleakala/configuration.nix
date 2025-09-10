@@ -16,6 +16,7 @@
     ../../modules/system/immich.nix
     ../../modules/system/1password.nix
     ../../modules/system/syncthing.nix
+    ../../modules/system/disk-management.nix
   ];
 
   # Bootloader.
