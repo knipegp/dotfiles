@@ -28,5 +28,21 @@
     users.users.${config.services.sshServer.user} = {
       openssh.authorizedKeys.keys = config.services.sshServer.authorizedKeys;
     };
+
+    security.sudo.extraRules = [
+      {
+        users = [ "ALL" ];
+        commands = [
+          {
+            command = "${config.systemd.package}/bin/systemctl suspend";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/run/current-system/sw/bin/systemctl suspend";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
   };
 }
