@@ -121,6 +121,8 @@ in
             pruneTags = true;
             all = true;
           };
+          branch.autosetupmerge = "always";
+          branch.autosetuprebase = "always";
           help.autocorrect = "prompt";
           commit.verbose = true;
           rerere = {

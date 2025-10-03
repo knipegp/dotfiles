@@ -5,7 +5,8 @@
 { ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/system/desktop.nix
     ../../modules/system/hyprland.nix
@@ -17,6 +18,7 @@
     ../../modules/system/1password.nix
     ../../modules/system/syncthing.nix
     ../../modules/system/disk-management.nix
+    ../../modules/system/ssh-server.nix
   ];
 
   # Bootloader.
@@ -27,8 +29,7 @@
     hostName = "haleakala"; # Define your hostname.
     networkmanager.enable = true;
   };
-
-  users.personalUser.enableSshLogin = true;
+  services.sshServer.user = "griff";
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -70,5 +71,8 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }
