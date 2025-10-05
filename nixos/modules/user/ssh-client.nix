@@ -3,8 +3,9 @@
 {
 
   home.packages = with pkgs; [
+    wakeonlan
     (writeShellScriptBin "wake-haleakala" ''
-      ssh root@volcano ./wake-haleakala.sh
+      wakeonlan -i 10.200.0.4 24:4b:fe:96:37:65
     '')
     (writeShellScriptBin "sleep-haleakala" ''
       ssh griff@haleakala sudo systemctl suspend

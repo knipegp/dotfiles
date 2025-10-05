@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# Message of the Day script
+# This script displays a greeting and system status when a new terminal is opened
+
+# Check if terminal supports colors
+has_colors() {
+    [[ -t 1 ]] && [[ "${TERM}" != "dumb" ]] && command -v tput >/dev/null 2>&1 && tput setaf 1 >/dev/null 2>&1
+}
+
+# Check if terminal supports emojis (basic heuristic)
+has_emojis() {
+    [[ -t 1 ]] && [[ "${TERM}" =~ (xterm|screen|tmux) ]] && [[ "${LANG}" =~ UTF-8 ]]
+}
+
+# ANSI color codes
+if has_colors; then
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[0;33m'
+    BLUE='\033[0;34m'
+    MAGENTA='\033[0;35m'
+    CYAN='\033[0;36m'
+    WHITE='\033[0;37m'
+    BOLD='\033[1m'
+    RESET='\033[0m'
+else
+    RED='' GREEN='' YELLOW='' BLUE='' MAGENTA='' CYAN='' WHITE='' BOLD='' RESET=''
+fi
+
+# Emoji support
+if has_emojis; then
+    NETWORK_OK="🟢"
+    NETWORK_FAIL="🔴"
+else
+    NETWORK_OK="[OK]" NETWORK_FAIL="[FAIL]"
+fi
+
+# Check haleakala connectivity with low latency
+check_host() {
+    local host="$1"
+    local status_msg=""
+
+    # Use ping with minimal settings for low latency
+    # -c 1: send only 1 packet
+    # -W 1: timeout after 1 second
+    # -q: quiet mode
+    if ping -c 1 -W 1 -q "$host" >/dev/null 2>&1; then
+        status_msg="${GREEN}${NETWORK_OK} ${host} reachable${RESET}"
+    else
+        status_msg="${RED}${NETWORK_FAIL} ${host} unreachable${RESET}"
+    fi
+
+    echo -e "$status_msg"
+}
+
+# Main MOTD display
+main() {
+    echo -e "${BOLD}${YELLOW}Network Status:${RESET}"
+
+    check_host haleakala &
+    wait
+}
+
+main

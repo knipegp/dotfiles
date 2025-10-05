@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # See https://wiki.hyprland.org/Nix/Hyprland-on-NixOS/
@@ -19,6 +19,30 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    # wireplumber = {
+    #   enable = true;
+    #   configPackages = [
+    #     (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-displayport-audio.conf" ''
+    #       monitor.alsa.rules = [
+    #         {
+    #           matches = [
+    #             {
+    #               # Match the AMD GPU HDMI/DP audio device
+    #               device.name = "~alsa_card.pci-0000_0b_00.1"
+    #             }
+    #           ]
+    #           actions = {
+    #             update-props = {
+    #               # Enable HDMI 5 profile automatically
+    #               api.alsa.use-acp = true
+    #               device.profile = "output:hdmi-stereo-extra4"
+    #             }
+    #           }
+    #         }
+    #       ]
+    #     '')
+    #   ];
+    # };
   };
 
   # Enable the gnome-keyrig secrets vault.
@@ -53,8 +77,7 @@
       after = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
-        ExecStart =
-          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         Restart = "on-failure";
         RestartSec = 1;
         TimeoutStopSec = 10;

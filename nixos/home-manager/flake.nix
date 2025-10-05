@@ -38,6 +38,7 @@
           ../modules/user/desktop-development.nix
           ../modules/user/gnupg.nix
           ../modules/user/ssh-client.nix
+          ../modules/user/media-ripping.nix
         ];
 
       };

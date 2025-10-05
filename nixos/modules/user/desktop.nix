@@ -10,21 +10,13 @@
   home.packages = with pkgs; [
     discord
     # Needed for DRM websites (Netflix)
-    google-chrome
-    spotify
     signal-desktop
     parted
 
     libreoffice
 
     # Photo editing
-    pkgs-stable.darktable
-
-    # Sway
-    waybar
-    font-awesome
-    wpaperd
-    brightnessctl
+    darktable
 
     # Hyprland
     mako
@@ -44,7 +36,12 @@
 
     alsa-utils # Includes amixer for volume changing scripts
 
-    protonvpn-gui
+    pkgs-stable.protonvpn-gui
+
+    # gaming
+    moonlight-qt
+
+    jellyfin-media-player
   ];
 
   programs.rofi = {

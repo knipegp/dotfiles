@@ -27,14 +27,14 @@ in
       eza
       ripgrep
       bottom
-      du-dust
+      dust
       sd
       procs
       fd
       bat
-      nnn
       neofetch
       unzip
+      zellij
 
       # Fonts
       fira-code
@@ -62,6 +62,11 @@ in
       nodejs
 
       claude-code
+
+      # for raw image previews with kitten icat and ranger
+      imagemagick
+      ueberzugpp
+      ranger
     ];
 
     fonts.fontconfig.enable = true;
@@ -73,12 +78,24 @@ in
         "${config.home.homeDirectory}/.vimrc" = {
           source = ../../files/vim/vimrc;
         };
+        "${config.home.homeDirectory}/.local/bin/motd" = {
+          source = ../../files/motd;
+          executable = true;
+        };
+        "${config.home.homeDirectory}/.config/ranger/rc.conf" = {
+          source = ../../files/ranger/rc.conf;
+        };
+        "${config.home.homeDirectory}/.config/ranger/scope.sh" = {
+          source = ../../files/ranger/scope.sh;
+          executable = true;
+        };
       };
     };
 
     services.ssh-agent.enable = true;
 
     programs = {
+      yazi.enable = true;
       starship.enable = true;
       neovim = {
         enable = true;
@@ -88,12 +105,14 @@ in
         '';
       };
 
+      difftastic.enable = true;
       git = {
         enable = true;
-        userName = cfg.fullName;
-        userEmail = cfg.email;
-        difftastic.enable = true;
-        extraConfig = {
+        settings = {
+          user = {
+            name = cfg.fullName;
+            email = cfg.email;
+          };
           core.editor = "nvim";
           rebase = {
             autoSquash = true;
@@ -151,6 +170,11 @@ in
 
           if [ -d "''${HOME}/.local/bin" ]; then
               export PATH="''${PATH}":"''${HOME}/.local/bin"
+          fi
+
+          # Run MOTD on interactive shell startup
+          if [[ $- == *i* ]] && command -v motd >/dev/null 2>&1; then
+              motd
           fi
         '';
       };
