@@ -25,6 +25,7 @@
     ../../modules/system/jellyfin.nix
     ../../modules/system/navidrome.nix
     ../../modules/system/sunshine.nix
+    ../../modules/system/harmonia.nix
   ];
 
   # Bootloader.
@@ -61,6 +62,9 @@
   #   hostname = "haleakala";
   # };
   services.navidrome-custom = {
+    hostname = "haleakala";
+  };
+  services.harmonia-custom = {
     hostname = "haleakala";
   };
 
