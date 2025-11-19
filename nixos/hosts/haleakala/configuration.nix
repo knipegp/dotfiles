@@ -36,37 +36,38 @@
     hostName = "haleakala"; # Define your hostname.
     networkmanager.enable = true;
   };
-  services.sshServer.user = "griff";
+  services = {
+    sshServer.user = "griff";
+    # Configure Lidarr, Radarr, and Sonarr with hostname
+    lidarr-custom = {
+      hostname = "haleakala";
+    };
+    radarr-custom = {
+      hostname = "haleakala";
+    };
+    sonarr-custom = {
+      hostname = "haleakala";
+    };
+    jellyfin-custom = {
+      hostname = "haleakala";
+    };
+    immich-custom = {
+      hostname = "haleakala";
+    };
+    # khoj-custom = {
+    #   hostname = "haleakala";
+    # };
+    navidrome-custom = {
+      hostname = "haleakala";
+    };
+    harmonia-custom = {
+      hostname = "haleakala";
+    };
+  };
   nix.settings.trusted-users = [
     "root"
     "griff"
   ];
-
-  # Configure Lidarr, Radarr, and Sonarr with hostname
-  services.lidarr-custom = {
-    hostname = "haleakala";
-  };
-  services.radarr-custom = {
-    hostname = "haleakala";
-  };
-  services.sonarr-custom = {
-    hostname = "haleakala";
-  };
-  services.jellyfin-custom = {
-    hostname = "haleakala";
-  };
-  services.immich-custom = {
-    hostname = "haleakala";
-  };
-  # services.khoj-custom = {
-  #   hostname = "haleakala";
-  # };
-  services.navidrome-custom = {
-    hostname = "haleakala";
-  };
-  services.harmonia-custom = {
-    hostname = "haleakala";
-  };
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";

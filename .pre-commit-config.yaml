@@ -1,19 +1,60 @@
 ---
+# Configuration compatible with prek (https://github.com/j178/prek)
+# Install prek: curl -LsSf
+# https://github.com/j178/prek/releases/latest/download/prek-installer.sh | sh
+# Run: prek install && prek run --all
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: v5.0.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+      - id: check-case-conflict
+      - id: detect-private-key
+
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.32.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
         args:
           - --strict
+
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.9.0.5
+    rev: v0.10.0.1
     hooks:
       - id: shellcheck
         args: [--exclude=SC1090]
+
+  # Nix-specific hooks
+  - repo: https://github.com/nix-community/nixpkgs-fmt
+    rev: v1.3.0
+    hooks:
+      - id: nixpkgs-fmt
+
+  # - repo: https://github.com/astro/deadnix
+  #   rev: v1.2.1
+  #   hooks:
+  #     - id: deadnix
+  #       args: ['--edit']
+
+  - repo: local
+    hooks:
+      - id: statix
+        name: statix check
+        entry: statix check
+        language: system
+        files: '\.nix$'
+        pass_filenames: false
+      - id: deadnix
+        name: deadnix
+        entry: deadnix --edit
+        language: system
+        files: '\.nix$'
+        pass_filenames: false

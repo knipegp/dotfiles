@@ -5,8 +5,6 @@
   ...
 }:
 {
-  programs.librewolf.enable = true;
-  programs.firefox.enable = true;
   home.packages = with pkgs; [
     discord
     # Needed for DRM websites (Netflix)
@@ -41,13 +39,17 @@
     # gaming
     moonlight-qt
 
-    jellyfin-media-player
+    # jellyfin-media-player
   ];
 
-  programs.rofi = {
-    enable = true;
-    package = pkgs.rofi;
-    plugins = [ pkgs.rofi-emoji ];
+  programs = {
+    librewolf.enable = true;
+    firefox.enable = true;
+    rofi = {
+      enable = true;
+      package = pkgs.rofi;
+      plugins = [ pkgs.rofi-emoji ];
+    };
   };
 
   services.udiskie = {
