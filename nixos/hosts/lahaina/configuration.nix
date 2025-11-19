@@ -13,6 +13,7 @@
     ../../modules/system/laptop-power.nix
     ../../modules/system/printing.nix
     ../../modules/system/disk-management.nix
+    ../../modules/system/harmonia-client.nix
   ];
 
   # Laptop power management configuration
