@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ ... }:
 
 {
   # Home Manager configuration for macOS

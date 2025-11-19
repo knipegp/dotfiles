@@ -16,8 +16,7 @@
   outputs =
     {
       self,
-      nixpkgs,
-      nix-darwin,
+      nix-darwin, # deadnix: skip
       home-manager,
       ...
     }:
@@ -25,7 +24,6 @@
       # Configure for Apple Silicon by default
       # Change to "x86_64-darwin" for Intel Macs
       system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
 
       # User configuration
       username = "griff";
@@ -45,17 +43,19 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.${username} = { config, pkgs, lib, ... }: {
-                imports = [
-                  ./home.nix
-                  ../modules/user/development.nix
-                  ../modules/user/desktop-development.nix
-                  ../modules/user/gnupg.nix
-                ];
+              users.${username} =
+                { ... }:
+                {
+                  imports = [
+                    ./home.nix
+                    ../modules/user/development.nix
+                    ../modules/user/desktop-development.nix
+                    ../modules/user/gnupg.nix
+                  ];
 
-                # Set platform flag for macOS
-                platform.isDarwin = true;
-              };
+                  # Set platform flag for macOS
+                  platform.isDarwin = true;
+                };
             };
 
             # Allow unfree packages
