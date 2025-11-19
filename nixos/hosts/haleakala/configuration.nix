@@ -5,17 +5,26 @@
 { ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/system/desktop.nix
     ../../modules/system/hyprland.nix
     ../../modules/system/development.nix
     ../../modules/system/personal-user.nix
-    ../../modules/system/khoj.nix
+    # ../../modules/system/khoj.nix
     ../../modules/system/collect-garbage.nix
     ../../modules/system/immich.nix
     ../../modules/system/1password.nix
     ../../modules/system/syncthing.nix
+    ../../modules/system/disk-management.nix
+    ../../modules/system/ssh-server.nix
+    ../../modules/system/lidarr.nix
+    ../../modules/system/radarr.nix
+    ../../modules/system/sonarr.nix
+    ../../modules/system/jellyfin.nix
+    ../../modules/system/navidrome.nix
+    ../../modules/system/sunshine.nix
   ];
 
   # Bootloader.
@@ -26,8 +35,34 @@
     hostName = "haleakala"; # Define your hostname.
     networkmanager.enable = true;
   };
+  services.sshServer.user = "griff";
+  nix.settings.trusted-users = [
+    "root"
+    "griff"
+  ];
 
-  users.personalUser.enableSshLogin = true;
+  # Configure Lidarr, Radarr, and Sonarr with hostname
+  services.lidarr-custom = {
+    hostname = "haleakala";
+  };
+  services.radarr-custom = {
+    hostname = "haleakala";
+  };
+  services.sonarr-custom = {
+    hostname = "haleakala";
+  };
+  services.jellyfin-custom = {
+    hostname = "haleakala";
+  };
+  services.immich-custom = {
+    hostname = "haleakala";
+  };
+  # services.khoj-custom = {
+  #   hostname = "haleakala";
+  # };
+  services.navidrome-custom = {
+    hostname = "haleakala";
+  };
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -69,5 +104,8 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }

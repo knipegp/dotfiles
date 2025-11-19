@@ -1,7 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ emacs kitty ];
+  home.packages = with pkgs; [
+    emacs
+    kitty
+    clang # needed to build and install some emacs packages
+  ];
 
   home.file = {
     "${config.xdg.configHome}/doom" = {

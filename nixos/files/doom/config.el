@@ -32,6 +32,9 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
+(after! org (setq org-todo-keywords
+                  '((sequence "TODO(t)" "IN_PROGRESS(i)" "WAIT(w)" "|" "DONE(d)")
+                    (sequence "|" "CANCELED(c)"))))
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Org/")
@@ -43,36 +46,48 @@
       '(("c" "Custom Agenda"
          ((org-ql-block '((tags "inbox") :header "Inbox"))
           (org-ql-block
-           '((and (todo "TODO")
+           '((and (or (todo "TODO") (todo "WAIT") (todo "IN_PROGRESS"))
                   (tags "recurring")
                   (planning 0)
                   )
              :header "Recurring"
              :sort (date priority)))
           (org-ql-block
-           '((and (todo "TODO")
+           '((and (or (todo "TODO") (todo "WAIT") (todo "IN_PROGRESS"))
                   (tags "task")
                   (not (tags "recurring"))
                   (or (planning 30) (not (planning))))
              :header "Tasks"
              :sort (date priority)))
           (org-ql-block
-           '((and (todo "TODO")
-                  (tags "readme")
+           '((and (or (todo "TODO") (todo "WAIT") (todo "IN_PROGRESS"))
+                  (tags "project")
                   (or (planning 30) (not (planning))))
-             :header "README"
+             :header "Project"
              :sort (date priority)))
           (org-ql-block
-           '((and (todo "TODO")
+           '((and (or (todo "TODO") (todo "WAIT") (todo "IN_PROGRESS"))
                   (tags "shopping_cart")
                   (or (planning 30) (not (planning))))
              :header "Shopping Cart"
              :sort (date priority)))
           (org-ql-block
-           '((and (or (todo "TODO") (todo "WAIT"))
+           '((and (or (todo "TODO") (todo "WAIT") (todo "IN_PROGRESS"))
+                  (tags "research")
+                  (or (planning 30) (not (planning))))
+             :header "Research"
+             :sort (date priority)))
+          (org-ql-block
+           '((and (or (todo "TODO") (todo "WAIT") (todo "IN_PROGRESS"))
                   (tags "hobby")
                   (or (planning 30) (not (planning))))
              :header "Hobby"
+             :sort (date priority)))
+          (org-ql-block
+           '((and (or (todo "TODO") (todo "WAIT") (todo "IN_PROGRESS"))
+                  (tags "readme")
+                  (or (planning 30) (not (planning))))
+             :header "README"
              :sort (date priority)))
           (agenda)))))
 ;; From: https://emacs.stackexchange.com/a/26120

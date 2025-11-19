@@ -12,7 +12,13 @@
     ../../modules/system/syncthing.nix
     ../../modules/system/laptop-power.nix
     ../../modules/system/printing.nix
+    ../../modules/system/disk-management.nix
   ];
+
+  # Laptop power management configuration
+  laptopPower = {
+    # No resumeDevice configured - lihue doesn't have swap
+  };
 
   # Bootloader.
   boot = {

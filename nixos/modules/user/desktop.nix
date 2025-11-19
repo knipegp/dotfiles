@@ -1,24 +1,22 @@
-{ config, pkgs, pkgs-stable, ... }: {
+{
+  config,
+  pkgs,
+  pkgs-stable,
+  ...
+}:
+{
   programs.librewolf.enable = true;
   programs.firefox.enable = true;
   home.packages = with pkgs; [
     discord
     # Needed for DRM websites (Netflix)
-    google-chrome
-    spotify
     signal-desktop
     parted
 
     libreoffice
 
     # Photo editing
-    pkgs-stable.darktable
-
-    # Sway
-    waybar
-    font-awesome
-    wpaperd
-    brightnessctl
+    darktable
 
     # Hyprland
     mako
@@ -38,8 +36,19 @@
 
     alsa-utils # Includes amixer for volume changing scripts
 
-    protonvpn-gui
+    pkgs-stable.protonvpn-gui
+
+    # gaming
+    moonlight-qt
+
+    jellyfin-media-player
   ];
+
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi;
+    plugins = [ pkgs.rofi-emoji ];
+  };
 
   services.udiskie = {
     enable = true;
@@ -81,13 +90,16 @@
         sha256 = "148c766ygl7wsyi2nnv34y0bkz2w9c5x9d9w0a4xpcp7h835h7j0";
       };
     };
-    "${config.home.homeDirectory}/.config/eww/include/saimoomedits/eww-widgets" =
-      {
-        source = builtins.fetchGit {
-          url = "https://github.com/saimoomedits/eww-widgets.git";
-          rev = "cfb2523a4e37ed2979e964998d9a4c37232b2975";
-        };
+    "${config.home.homeDirectory}/.config/eww/include/saimoomedits/eww-widgets" = {
+      source = builtins.fetchGit {
+        url = "https://github.com/saimoomedits/eww-widgets.git";
+        rev = "cfb2523a4e37ed2979e964998d9a4c37232b2975";
       };
+    };
+    "${config.home.homeDirectory}/.local/bin/screenshot" = {
+      source = ../../files/scripts/screenshot.sh;
+      executable = true;
+    };
   };
 
 }

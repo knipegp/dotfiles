@@ -1,7 +1,14 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
-let cfg = config.development-user;
-in {
+let
+  cfg = config.development-user;
+in
+{
   options.development-user = {
     fullName = lib.mkOption {
       default = "Griffin Knipe";
@@ -12,6 +19,7 @@ in {
       description = "email";
     };
   };
+  imports = [ ../../modules/user/python-dev.nix ];
   config = {
     home.packages = with pkgs; [
       # Basic terminal tools
@@ -19,14 +27,14 @@ in {
       eza
       ripgrep
       bottom
-      du-dust
+      dust
       sd
       procs
       fd
       bat
-      nnn
       neofetch
       unzip
+      zellij
 
       # Fonts
       fira-code
@@ -36,10 +44,6 @@ in {
       # Dev tools
       tokei
       openssh
-
-      # Python
-      python312
-      uv
 
       # nix
       nil
@@ -58,6 +62,11 @@ in {
       nodejs
 
       claude-code
+
+      # for raw image previews with kitten icat and ranger
+      imagemagick
+      ueberzugpp
+      ranger
     ];
 
     fonts.fontconfig.enable = true;
@@ -69,12 +78,24 @@ in {
         "${config.home.homeDirectory}/.vimrc" = {
           source = ../../files/vim/vimrc;
         };
+        "${config.home.homeDirectory}/.local/bin/motd" = {
+          source = ../../files/motd;
+          executable = true;
+        };
+        "${config.home.homeDirectory}/.config/ranger/rc.conf" = {
+          source = ../../files/ranger/rc.conf;
+        };
+        "${config.home.homeDirectory}/.config/ranger/scope.sh" = {
+          source = ../../files/ranger/scope.sh;
+          executable = true;
+        };
       };
     };
 
     services.ssh-agent.enable = true;
 
     programs = {
+      yazi.enable = true;
       starship.enable = true;
       neovim = {
         enable = true;
@@ -84,12 +105,14 @@ in {
         '';
       };
 
+      difftastic.enable = true;
       git = {
         enable = true;
-        userName = cfg.fullName;
-        userEmail = cfg.email;
-        difftastic.enable = true;
-        extraConfig = {
+        settings = {
+          user = {
+            name = cfg.fullName;
+            email = cfg.email;
+          };
           core.editor = "nvim";
           rebase = {
             autoSquash = true;
@@ -117,6 +140,8 @@ in {
             pruneTags = true;
             all = true;
           };
+          branch.autosetupmerge = "always";
+          branch.autosetuprebase = "always";
           help.autocorrect = "prompt";
           commit.verbose = true;
           rerere = {
@@ -143,9 +168,14 @@ in {
               export PATH="''${PATH}":"''${HOME}/.config/emacs/bin"
           fi
 
-          # Allow applications to locate shared libraries. For example, jupyter
-          # notebook needs to locate libstdc++.so.6.
-          # export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib"
+          if [ -d "''${HOME}/.local/bin" ]; then
+              export PATH="''${PATH}":"''${HOME}/.local/bin"
+          fi
+
+          # Run MOTD on interactive shell startup
+          if [[ $- == *i* ]] && command -v motd >/dev/null 2>&1; then
+              motd
+          fi
         '';
       };
     };

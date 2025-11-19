@@ -140,6 +140,6 @@
     "custom/apps": {
         "tooltip": true,
         "format": "apps",
-        "on-click": "wofi --show drun"
+        "on-click": "wofi --show drun,run"
     },
 }

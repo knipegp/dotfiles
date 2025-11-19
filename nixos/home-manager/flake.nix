@@ -11,12 +11,19 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
   };
 
-  outputs = { nixpkgs, home-manager, nixpkgs-stable, ... }:
+  outputs =
+    {
+      nixpkgs,
+      home-manager,
+      nixpkgs-stable,
+      ...
+    }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-    in {
+    in
+    {
       homeConfigurations."griff" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
@@ -30,6 +37,8 @@
           ../modules/user/personal.nix
           ../modules/user/desktop-development.nix
           ../modules/user/gnupg.nix
+          ../modules/user/ssh-client.nix
+          ../modules/user/media-ripping.nix
         ];
 
       };

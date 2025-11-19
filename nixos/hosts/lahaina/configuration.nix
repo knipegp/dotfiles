@@ -12,7 +12,13 @@
     ../../modules/system/syncthing.nix
     ../../modules/system/laptop-power.nix
     ../../modules/system/printing.nix
+    ../../modules/system/disk-management.nix
   ];
+
+  # Laptop power management configuration
+  laptopPower = {
+    resumeDevice = "/dev/disk/by-uuid/762e6538-bd80-4d17-ac50-7d0ad80cf419";
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -64,5 +70,8 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }
