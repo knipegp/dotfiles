@@ -35,6 +35,7 @@ in
       neofetch
       unzip
       zellij
+      gh
 
       # Common project tools
       prek
