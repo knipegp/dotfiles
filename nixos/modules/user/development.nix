@@ -7,6 +7,8 @@
 
 let
   cfg = config.development-user;
+  platformCfg = config.platform;
+  isDarwin = platformCfg.isDarwin or false;
 in
 {
   options.development-user = {
@@ -21,58 +23,62 @@ in
   };
   imports = [ ../../modules/user/python-dev.nix ];
   config = {
-    home.packages = with pkgs; [
-      # Basic terminal tools
-      tealdeer
-      eza
-      ripgrep
-      bottom
-      dust
-      sd
-      procs
-      fd
-      bat
-      neofetch
-      unzip
-      zellij
-      gh
+    home.packages = with pkgs;
+      [
+        # Basic terminal tools
+        tealdeer
+        eza
+        ripgrep
+        bottom
+        dust
+        sd
+        procs
+        fd
+        bat
+        neofetch
+        unzip
+        zellij
+        gh
 
-      # Common project tools
-      prek
+        # Common project tools
+        prek
 
-      # Fonts
-      fira-code
-      fira-code-symbols
-      nerd-fonts.fira-code
+        # Fonts
+        fira-code
+        fira-code-symbols
+        nerd-fonts.fira-code
 
-      # Dev tools
-      tokei
-      openssh
+        # Dev tools
+        tokei
+        openssh
 
-      # nix
-      nil
-      statix
-      deadnix
-      nixfmt-classic
+        # nix
+        nil
+        statix
+        deadnix
+        nixfmt-classic
 
-      pandoc
+        pandoc
 
-      shellcheck
-      shfmt
+        shellcheck
+        shfmt
 
-      graphviz
+        graphviz
 
-      rstfmt
+        rstfmt
 
-      nodejs
+        nodejs
 
-      claude-code
+        claude-code
 
-      # for raw image previews with kitten icat and ranger
-      imagemagick
-      ueberzugpp
-      ranger
-    ];
+        # for raw image previews with ranger
+        imagemagick
+        ranger
+      ]
+      ++ lib.optionals (!isDarwin) [
+        # Linux-only: ueberzugpp for terminal image previews
+        ueberzugpp
+      ];
 
     fonts.fontconfig.enable = true;
 
@@ -97,7 +103,9 @@ in
       };
     };
 
-    services.ssh-agent.enable = true;
+    # SSH agent service (systemd-based, Linux-only)
+    # On macOS, ssh-agent is managed by launchd automatically
+    services.ssh-agent.enable = !isDarwin;
 
     programs = {
       yazi.enable = true;
