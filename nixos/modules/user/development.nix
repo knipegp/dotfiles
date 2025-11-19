@@ -36,6 +36,9 @@ in
       unzip
       zellij
 
+      # Common project tools
+      prek
+
       # Fonts
       fira-code
       fira-code-symbols
@@ -48,6 +51,7 @@ in
       # nix
       nil
       statix
+      deadnix
       nixfmt-classic
 
       pandoc
@@ -111,7 +115,7 @@ in
         settings = {
           user = {
             name = cfg.fullName;
-            email = cfg.email;
+            inherit (cfg) email;
           };
           core.editor = "nvim";
           rebase = {
@@ -122,7 +126,6 @@ in
           pull.rebase = true;
           merge.conflictstyle = "zdiff3";
           column.ui = "auto";
-          branch.sort = "version:refname";
           init.defaultBranch = "main";
           diff = {
             algorithm = "histogram";
@@ -140,8 +143,11 @@ in
             pruneTags = true;
             all = true;
           };
-          branch.autosetupmerge = "always";
-          branch.autosetuprebase = "always";
+          branch = {
+            sort = "version:refname";
+            autosetupmerge = "always";
+            autosetuprebase = "always";
+          };
           help.autocorrect = "prompt";
           commit.verbose = true;
           rerere = {

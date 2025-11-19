@@ -29,35 +29,40 @@
     extraModulePackages = [ ];
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/568e07b5-8b29-4351-a77b-41c51c3c2849";
-    fsType = "ext4";
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/568e07b5-8b29-4351-a77b-41c51c3c2849";
+      fsType = "ext4";
+    };
+    "/mnt/data1" = {
+      device = "/dev/disk/by-uuid/58523c0c-f4c5-4887-956e-3a27b7af1439";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/7354-3A63";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
+    };
   };
 
-  fileSystems."/mnt/data1" = {
-    device = "/dev/disk/by-uuid/58523c0c-f4c5-4887-956e-3a27b7af1439";
-    fsType = "ext4";
-  };
   systemd.tmpfiles.rules = [
     "d /mnt/data1 0775 root data-users - -"
   ];
   users.groups.data-users = { };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/7354-3A63";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
-
   swapDevices = [ ];
 
   # Explicitly enable DHCP only on enp5s0 to ensure it's the default route
-  networking.useDHCP = lib.mkDefault false;
-  networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
-  networking.interfaces.enp5s0.wakeOnLan.enable = true;
+  networking = {
+    useDHCP = lib.mkDefault false;
+    interfaces.enp5s0 = {
+      useDHCP = lib.mkDefault true;
+      wakeOnLan.enable = true;
+    };
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

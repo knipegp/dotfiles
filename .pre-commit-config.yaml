@@ -1,6 +1,7 @@
 ---
 # Configuration compatible with prek (https://github.com/j178/prek)
-# Install prek: curl -LsSf https://github.com/j178/prek/releases/latest/download/prek-installer.sh | sh
+# Install prek: curl -LsSf
+# https://github.com/j178/prek/releases/latest/download/prek-installer.sh | sh
 # Run: prek install && prek run --all
 
 repos:
@@ -37,17 +38,23 @@ repos:
     hooks:
       - id: nixpkgs-fmt
 
-  - repo: https://github.com/astro/deadnix
-    rev: v1.2.1
-    hooks:
-      - id: deadnix
-        args: ['--edit']
+  # - repo: https://github.com/astro/deadnix
+  #   rev: v1.2.1
+  #   hooks:
+  #     - id: deadnix
+  #       args: ['--edit']
 
   - repo: local
     hooks:
       - id: statix
         name: statix check
         entry: statix check
+        language: system
+        files: '\.nix$'
+        pass_filenames: false
+      - id: deadnix
+        name: deadnix
+        entry: deadnix --edit
         language: system
         files: '\.nix$'
         pass_filenames: false

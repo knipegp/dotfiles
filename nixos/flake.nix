@@ -6,7 +6,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs: {
+  outputs = { nixpkgs, nixpkgs-unstable, ... }@inputs: {
     nixosConfigurations = {
       haleakala = nixpkgs.lib.nixosSystem {
         specialArgs = {
