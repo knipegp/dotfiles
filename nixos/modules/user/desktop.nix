@@ -39,7 +39,7 @@
     # gaming
     moonlight-qt
 
-    # jellyfin-media-player
+    pkgs-stable.jellyfin-media-player
   ];
 
   programs = {
