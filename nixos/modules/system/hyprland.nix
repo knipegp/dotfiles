@@ -6,6 +6,49 @@
   programs.hyprland.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
+  # Display manager configuration
+  services = {
+    displayManager = {
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
+      defaultSession = "hyprland";
+    };
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      pulse.enable = true;
+      # wireplumber = {
+      #   enable = true;
+      #   configPackages = [
+      #     (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-displayport-audio.conf" ''
+      #       monitor.alsa.rules = [
+      #         {
+      #           matches = [
+      #             {
+      #               # Match the AMD GPU HDMI/DP audio device
+      #               device.name = "~alsa_card.pci-0000_0b_00.1"
+      #             }
+      #           ]
+      #           actions = {
+      #             update-props = {
+      #               # Enable HDMI 5 profile automatically
+      #               api.alsa.use-acp = true
+      #               device.profile = "output:hdmi-stereo-extra4"
+      #             }
+      #           }
+      #         }
+      #       ]
+      #     '')
+      #   ];
+      # };
+    };
+    # Enable the gnome-keyrig secrets vault.
+    # Will be exposed through DBus to programs willing to store secrets.
+    gnome.gnome-keyring.enable = true;
+  };
+
   environment.systemPackages = with pkgs; [
     dbus # make dbus-update-activation-environment available in the path
     polkit_gnome # polkit authentication agent
@@ -15,39 +58,6 @@
   ];
 
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
-    # wireplumber = {
-    #   enable = true;
-    #   configPackages = [
-    #     (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-displayport-audio.conf" ''
-    #       monitor.alsa.rules = [
-    #         {
-    #           matches = [
-    #             {
-    #               # Match the AMD GPU HDMI/DP audio device
-    #               device.name = "~alsa_card.pci-0000_0b_00.1"
-    #             }
-    #           ]
-    #           actions = {
-    #             update-props = {
-    #               # Enable HDMI 5 profile automatically
-    #               api.alsa.use-acp = true
-    #               device.profile = "output:hdmi-stereo-extra4"
-    #             }
-    #           }
-    #         }
-    #       ]
-    #     '')
-    #   ];
-    # };
-  };
-
-  # Enable the gnome-keyrig secrets vault.
-  # Will be exposed through DBus to programs willing to store secrets.
-  services.gnome.gnome-keyring.enable = true;
 
   security.polkit = {
     enable = true;

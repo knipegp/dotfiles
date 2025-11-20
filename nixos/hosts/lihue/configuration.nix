@@ -4,7 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/system/desktop.nix
-    ../../modules/system/hyprland.nix
+    ../../modules/system/gnome.nix
     ../../modules/system/development.nix
     ../../modules/system/personal-user.nix
     ../../modules/system/collect-garbage.nix
@@ -14,6 +14,7 @@
     ../../modules/system/printing.nix
     ../../modules/system/disk-management.nix
     ../../modules/system/harmonia-client.nix
+    ../../modules/system/ssh-server.nix
   ];
 
   # Laptop power management configuration
@@ -73,5 +74,8 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }
