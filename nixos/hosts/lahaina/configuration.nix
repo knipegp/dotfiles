@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 {
   imports = [
@@ -92,7 +92,7 @@
       "render"
     ]; # GPU access for hardware encoding
     packages = with pkgs; [
-      ffmpeg-full # Full ffmpeg with all codec and hardware acceleration support
+      pkgs-unstable.ffmpeg-full # Full ffmpeg with all codec and hardware acceleration support
       libva-utils # Utilities to check VAAPI setup (vainfo command)
       intel-gpu-tools # Intel GPU monitoring and debugging tools
     ];
