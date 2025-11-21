@@ -51,24 +51,6 @@
           }
         ];
       }
-      # Allow admin user to run nixos-rebuild without password
-      {
-        users = [ "admin" ];
-        commands = [
-          {
-            command = "/run/current-system/sw/bin/nix-env";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "/run/current-system/sw/bin/switch-to-configuration";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "/run/current-system/sw/bin/nixos-rebuild";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-      }
     ];
   };
 }
