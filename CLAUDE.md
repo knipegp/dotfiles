@@ -27,12 +27,6 @@ sudo nixos-rebuild switch \
   --target-host <user>@<host-or-ip> \
   --use-remote-sudo
 
-# Example: Deploy to lihue remotely
-sudo nixos-rebuild switch \
-  --flake ~/dotfiles/nixos/#lihue \
-  --target-host admin@10.200.0.208 \
-  --use-remote-sudo
-
 # Test configuration before applying
 sudo nixos-rebuild test --flake /home/griff/dotfiles/nixos/#<hostname>
 
@@ -217,34 +211,12 @@ sudo nixos-rebuild test \
   --use-remote-sudo
 ```
 
-### Common Remote Deployment Scenarios
-```bash
-# Deploy lihue from another machine
-sudo nixos-rebuild switch \
-  --flake ~/dotfiles/nixos/#lihue \
-  --target-host admin@10.200.0.208 \
-  --use-remote-sudo
-
-# Deploy using hostname instead of IP
-sudo nixos-rebuild switch \
-  --flake ~/dotfiles/nixos/#lihue \
-  --target-host admin@lihue.local \
-  --use-remote-sudo
-
-# Build configuration locally, deploy remotely
-nix build .#nixosConfigurations.lihue.config.system.build.toplevel
-sudo nixos-rebuild switch \
-  --flake ~/dotfiles/nixos/#lihue \
-  --target-host admin@10.200.0.208 \
-  --use-remote-sudo
-```
-
 ## Current Hosts
 
 ### Linux (NixOS)
 - **haleakala** - Desktop workstation
-- **lihue** - Laptop with power management (TLP), SSH server configuration
-- **lahaina** - Additional host
+- **lihue** - Laptop with SSH server configuration
+- **lahaina** - Laptop
 
 ### macOS (Darwin)
 - **maui** - macOS host (Apple Silicon/ARM64 by default, configurable for Intel)
@@ -286,8 +258,3 @@ The repository uses three separate flakes for maximum flexibility:
 1. **NixOS System flake** (`nixos/flake.nix`): Manages nixosConfigurations for Linux hosts
 2. **Home Manager flake** (`nixos/home-manager/flake.nix`): Standalone user configuration for user "griff"
 3. **Darwin flake** (`nixos/darwin/flake.nix`): Manages darwinConfiguration for macOS hosts with integrated Home Manager
-
-### Package Sources
-Home Manager flake uses both stable and unstable nixpkgs:
-- Main packages from `nixos-unstable`
-- Stable packages available via `pkgs-stable` argument
