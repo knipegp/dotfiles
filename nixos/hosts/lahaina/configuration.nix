@@ -6,7 +6,7 @@
     ../../modules/system/desktop.nix
     ../../modules/system/hyprland.nix
     ../../modules/system/development.nix
-    ../../modules/system/personal-user.nix
+    ../../modules/system/griff-user.nix
     ../../modules/system/collect-garbage.nix
     ../../modules/system/1password.nix
     ../../modules/system/syncthing.nix

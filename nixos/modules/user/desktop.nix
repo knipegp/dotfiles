@@ -92,12 +92,12 @@
         sha256 = "148c766ygl7wsyi2nnv34y0bkz2w9c5x9d9w0a4xpcp7h835h7j0";
       };
     };
-    "${config.home.homeDirectory}/.config/eww/include/saimoomedits/eww-widgets" = {
-      source = builtins.fetchGit {
-        url = "https://github.com/saimoomedits/eww-widgets.git";
-        rev = "cfb2523a4e37ed2979e964998d9a4c37232b2975";
-      };
-    };
+    # "${config.home.homeDirectory}/.config/eww/include/saimoomedits/eww-widgets" = {
+    #   source = builtins.fetchGit {
+    #     url = "https://github.com/saimoomedits/eww-widgets.git";
+    #     rev = "cfb2523a4e37ed2979e964998d9a4c37232b2975";
+    #   };
+    # };
     "${config.home.homeDirectory}/.local/bin/screenshot" = {
       source = ../../files/scripts/screenshot.sh;
       executable = true;
