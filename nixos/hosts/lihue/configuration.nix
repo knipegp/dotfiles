@@ -36,8 +36,46 @@
   };
 
   services = {
-    sshServer.users = [ "griff" "ripper" ];
+    sshServer.users = [ "griff" "ripper" "admin" ];
+
+    # Disable sleep and suspend for server operation
+    logind = {
+      lidSwitch = "ignore";
+      lidSwitchDocked = "ignore";
+      lidSwitchExternalPower = "ignore";
+      extraConfig = ''
+        HandlePowerKey=ignore
+        IdleAction=ignore
+      '';
+    };
+
+    # Configure auto-login for duloc
+    displayManager.autoLogin = {
+      enable = true;
+      user = "duloc";
+    };
   };
+
+  # Prevent GNOME from suspending
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+
+  # Disable automatic suspend in GNOME
+  services.xserver.displayManager.gdm.autoSuspend = false;
+
+  # System-wide power management settings
+  powerManagement = {
+    enable = true;
+    powertop.enable = false;
+  };
+
+  # Additional systemd sleep settings
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowSuspendThenHibernate=no
+    AllowHybridSleep=no
+  '';
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -68,10 +106,13 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [ "griff" "admin" ];
+  };
 
   users.users = {
     griff = {
@@ -81,15 +122,28 @@
     };
     duloc = {
       isNormalUser = true;
+      # No password - empty password hash
+      hashedPassword = "";
       packages = with pkgs; [
         jellyfin-media-player
         pkgs-unstable.firefox
       ];
+      # Explicitly disable SSH for duloc
+      openssh.authorizedKeys.keys = [ ];
     };
     ripper = {
       isNormalUser = true;
       packages = with pkgs; [
         ffmpeg
+      ];
+    };
+    admin = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ]; # Enable sudo
+      # No password - will authenticate via SSH keys only
+      hashedPassword = "";
+      packages = with pkgs; [
+        git
       ];
     };
   };
