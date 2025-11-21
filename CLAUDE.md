@@ -4,17 +4,40 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a personal dotfiles repository using NixOS flakes for declarative system configuration management. The configuration supports multiple hosts (haleakala, lihue, lahaina) with both system-level and user-level configurations through NixOS and Home Manager.
+This is a personal dotfiles repository using NixOS flakes for declarative system configuration management. The configuration supports multiple hosts across Linux and macOS with system-level and user-level configurations through NixOS, nix-darwin, and Home Manager.
+
+### Supported Hosts
+- **Linux (NixOS)**: haleakala, lihue, lahaina
+- **macOS (Darwin)**: maui
 
 ## Key Commands
 
 ### NixOS System Configuration
 ```bash
-# Apply system configuration for a specific host
+# Apply system configuration locally for a specific host
 sudo nixos-rebuild switch --flake /home/griff/dotfiles/nixos/#<hostname>
 
-# Available hostnames: haleakala, lihue, lahaina
+# Examples
 sudo nixos-rebuild switch --flake /home/griff/dotfiles/nixos/#lihue
+sudo nixos-rebuild switch --flake /home/griff/dotfiles/nixos/#haleakala
+
+# Remote deployment to another host
+sudo nixos-rebuild switch \
+  --flake /home/griff/dotfiles/nixos/#<hostname> \
+  --target-host <user>@<host-or-ip> \
+  --use-remote-sudo
+
+# Example: Deploy to lihue remotely
+sudo nixos-rebuild switch \
+  --flake ~/dotfiles/nixos/#lihue \
+  --target-host admin@10.200.0.208 \
+  --use-remote-sudo
+
+# Test configuration before applying
+sudo nixos-rebuild test --flake /home/griff/dotfiles/nixos/#<hostname>
+
+# Build without switching
+sudo nixos-rebuild build --flake /home/griff/dotfiles/nixos/#<hostname>
 ```
 
 ### Home Manager Configuration
@@ -25,6 +48,19 @@ home-manager switch --flake .
 
 # With backup and verbose output
 home-manager -v switch -b backup --flake .
+```
+
+### macOS (Darwin) Configuration
+```bash
+# Apply nix-darwin configuration (run from nixos/darwin directory)
+cd /home/griff/dotfiles/nixos/darwin
+darwin-rebuild switch --flake .
+
+# Or specify the hostname explicitly
+darwin-rebuild switch --flake .#maui
+
+# Build without switching
+darwin-rebuild build --flake .
 ```
 
 ### Flake Management
@@ -85,24 +121,42 @@ shfmt -w script.sh
 ## Architecture
 
 ### Directory Structure
-- `nixos/` - Main NixOS configuration
-  - `flake.nix` - System-level flake defining nixosConfigurations for each host
-  - `hosts/` - Per-host system configurations
-  - `modules/` - Reusable NixOS modules
+- `nixos/` - Main configuration directory
+  - `flake.nix` - System-level flake defining nixosConfigurations for Linux hosts
+  - `hosts/` - Per-host system configurations (haleakala, lihue, lahaina)
+  - `modules/` - Reusable NixOS and user modules
+    - `system/` - System-level modules (24 modules)
+    - `user/` - User-level modules (8 modules)
   - `files/` - Dotfiles and configuration files
-  - `home-manager/` - User-level configuration
+  - `home-manager/` - Standalone user-level configuration
     - `flake.nix` - Home Manager flake with user modules
     - `home.nix` - Base user configuration
+  - `darwin/` - macOS configuration
+    - `flake.nix` - nix-darwin flake for macOS hosts
+    - `configuration.nix` - macOS system configuration
+    - `home.nix` - macOS user configuration
 
 ### Configuration Pattern
-The system uses a modular approach:
+The system uses a modular approach with three separate flakes:
 
-1. **System Level** (`nixos/flake.nix`): Defines nixosConfigurations for each host
-2. **Host Configurations** (`nixos/hosts/*/configuration.nix`): Import system modules and hardware-specific settings
-3. **User Level** (`nixos/home-manager/flake.nix`): Defines homeManagerConfiguration for user "griff"
-4. **Modular Design**: Both system and user configurations use reusable modules:
-   - System modules: `system_desktop.nix`, `system_development.nix`, `hyprland.nix`, etc.
-   - User modules: `desktop-user.nix`, `development-user.nix`, `personal.nix`, etc.
+1. **NixOS System Level** (`nixos/flake.nix`):
+   - Defines nixosConfigurations for Linux hosts (haleakala, lihue, lahaina)
+   - Uses nixpkgs 25.05 with unstable overlay
+   - Imports host-specific configurations from `hosts/*/configuration.nix`
+
+2. **Home Manager User Level** (`nixos/home-manager/flake.nix`):
+   - Defines standalone homeManagerConfiguration for user "griff"
+   - Uses both stable and unstable nixpkgs
+   - Can be used independently on any Linux system
+
+3. **Darwin/macOS Level** (`nixos/darwin/flake.nix`):
+   - Defines darwinConfiguration for macOS hosts (maui)
+   - Integrates Home Manager for user configuration
+   - Supports both Apple Silicon (aarch64) and Intel (x86_64)
+
+4. **Modular Design**: All configurations share reusable modules:
+   - System modules (24): `ssh-server.nix`, `hyprland.nix`, `jellyfin.nix`, etc.
+   - User modules (8): `development.nix`, `desktop-development.nix`, `personal.nix`, etc.
 
 ### Key Modules
 - `development.nix` - Development tools, Git config, terminal utilities, includes Python development
@@ -120,16 +174,80 @@ User dotfiles are managed through Home Manager's `home.file` attribute, linking 
 
 ## Host Setup Process
 
-When adding a new host:
+### Adding a New Linux Host
+When adding a new NixOS host:
 1. Create directory in `nixos/hosts/<hostname>/`
 2. Copy `/etc/nixos/hardware-configuration.nix` to that directory
 3. Create `configuration.nix` importing appropriate modules
 4. Add host to `nixosConfigurations` in `nixos/flake.nix`
+5. Test the configuration: `nixos-rebuild test --flake .#<hostname>`
+
+### Adding a New macOS Host
+When adding a new Darwin host:
+1. Update `hostname` variable in `nixos/darwin/flake.nix`
+2. Adjust `system` variable for architecture (aarch64-darwin or x86_64-darwin)
+3. Customize `darwin/configuration.nix` as needed
+4. Run: `darwin-rebuild switch --flake .#<hostname>`
+
+## Remote Deployment
+
+### Prerequisites for Remote Deployment
+- SSH access to the target host
+- Nix installed on the target host
+- User with sudo privileges (use `--use-remote-sudo`)
+- SSH key-based authentication configured
+
+### Remote Deployment Commands
+```bash
+# Deploy to a remote Linux host
+sudo nixos-rebuild switch \
+  --flake ~/dotfiles/nixos/#<hostname> \
+  --target-host <user>@<host-or-ip> \
+  --use-remote-sudo
+
+# Build remotely but don't activate
+sudo nixos-rebuild build \
+  --flake ~/dotfiles/nixos/#<hostname> \
+  --target-host <user>@<host-or-ip>
+
+# Test configuration remotely (doesn't persist across reboot)
+sudo nixos-rebuild test \
+  --flake ~/dotfiles/nixos/#<hostname> \
+  --target-host <user>@<host-or-ip> \
+  --use-remote-sudo
+```
+
+### Common Remote Deployment Scenarios
+```bash
+# Deploy lihue from another machine
+sudo nixos-rebuild switch \
+  --flake ~/dotfiles/nixos/#lihue \
+  --target-host admin@10.200.0.208 \
+  --use-remote-sudo
+
+# Deploy using hostname instead of IP
+sudo nixos-rebuild switch \
+  --flake ~/dotfiles/nixos/#lihue \
+  --target-host admin@lihue.local \
+  --use-remote-sudo
+
+# Build configuration locally, deploy remotely
+nix build .#nixosConfigurations.lihue.config.system.build.toplevel
+sudo nixos-rebuild switch \
+  --flake ~/dotfiles/nixos/#lihue \
+  --target-host admin@10.200.0.208 \
+  --use-remote-sudo
+```
 
 ## Current Hosts
-- **haleakala** - Desktop configuration
-- **lihue** - Laptop with power management (TLP)
-- **lahaina** - New host (recently added)
+
+### Linux (NixOS)
+- **haleakala** - Desktop workstation
+- **lihue** - Laptop with power management (TLP), SSH server configuration
+- **lahaina** - Additional host
+
+### macOS (Darwin)
+- **maui** - macOS host (Apple Silicon/ARM64 by default, configurable for Intel)
 
 ## Window Managers
 Supports both Sway and Hyprland with shared configuration patterns. Hyprland is currently active with configs in `nixos/files/hyprland/`.
@@ -163,10 +281,11 @@ Git is configured with advanced settings including:
 
 ## Configuration Architecture Details
 
-### Dual Flake Structure
-The repository uses two separate flakes:
-1. **System flake** (`nixos/flake.nix`): Manages nixosConfigurations for each host
-2. **User flake** (`nixos/home-manager/flake.nix`): Manages homeManagerConfiguration for user "griff"
+### Triple Flake Structure
+The repository uses three separate flakes for maximum flexibility:
+1. **NixOS System flake** (`nixos/flake.nix`): Manages nixosConfigurations for Linux hosts
+2. **Home Manager flake** (`nixos/home-manager/flake.nix`): Standalone user configuration for user "griff"
+3. **Darwin flake** (`nixos/darwin/flake.nix`): Manages darwinConfiguration for macOS hosts with integrated Home Manager
 
 ### Package Sources
 Home Manager flake uses both stable and unstable nixpkgs:
