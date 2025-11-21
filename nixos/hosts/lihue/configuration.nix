@@ -36,7 +36,50 @@
   };
 
   services = {
-    sshServer.users = [ "griff" "ripper" ];
+    sshServer.users = [
+      "griff"
+      "ripper"
+      "admin"
+    ];
+
+    # Disable sleep and suspend for server operation
+    logind = {
+      lidSwitch = "ignore";
+      lidSwitchDocked = "ignore";
+      lidSwitchExternalPower = "ignore";
+      extraConfig = ''
+        HandlePowerKey=ignore
+        IdleAction=ignore
+      '';
+    };
+
+    # Configure auto-login for duloc
+    displayManager.autoLogin = {
+      enable = true;
+      user = "duloc";
+    };
+  };
+
+  # Prevent GNOME from suspending
+  systemd = {
+    services."getty@tty1".enable = false;
+    services."autovt@tty1".enable = false;
+    # Additional systemd sleep settings
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowSuspendThenHibernate=no
+      AllowHybridSleep=no
+    '';
+  };
+
+  # Disable automatic suspend in GNOME
+  services.xserver.displayManager.gdm.autoSuspend = false;
+
+  # System-wide power management settings
+  powerManagement = {
+    enable = true;
+    powertop.enable = false;
   };
 
   # Set your time zone.
@@ -68,23 +111,28 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "griff"
+      "admin"
+    ];
+  };
 
   users.users = {
-    griff = {
-      packages = with pkgs; [
-        git
-      ];
-    };
     duloc = {
       isNormalUser = true;
+      # No password - empty password hash
+      hashedPassword = "";
       packages = with pkgs; [
         jellyfin-media-player
         pkgs-unstable.firefox
       ];
+      # Explicitly disable SSH for duloc
+      openssh.authorizedKeys.keys = [ ];
     };
     ripper = {
       isNormalUser = true;
@@ -92,6 +140,22 @@
         ffmpeg
       ];
     };
+    admin = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ]; # Enable sudo
+      # No password - will authenticate via SSH keys only
+      hashedPassword = "";
+    };
   };
-
+  security.sudo.extraRules = [
+    {
+      users = [ "admin" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 }
