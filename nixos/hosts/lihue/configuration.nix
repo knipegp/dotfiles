@@ -36,7 +36,11 @@
   };
 
   services = {
-    sshServer.users = [ "griff" "ripper" "admin" ];
+    sshServer.users = [
+      "griff"
+      "ripper"
+      "admin"
+    ];
 
     # Disable sleep and suspend for server operation
     logind = {
@@ -57,8 +61,17 @@
   };
 
   # Prevent GNOME from suspending
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
+  systemd = {
+    services."getty@tty1".enable = false;
+    services."autovt@tty1".enable = false;
+    # Additional systemd sleep settings
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowSuspendThenHibernate=no
+      AllowHybridSleep=no
+    '';
+  };
 
   # Disable automatic suspend in GNOME
   services.xserver.displayManager.gdm.autoSuspend = false;
@@ -68,14 +81,6 @@
     enable = true;
     powertop.enable = false;
   };
-
-  # Additional systemd sleep settings
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowSuspendThenHibernate=no
-    AllowHybridSleep=no
-  '';
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -111,15 +116,13 @@
       "nix-command"
       "flakes"
     ];
-    trusted-users = [ "griff" "admin" ];
+    trusted-users = [
+      "griff"
+      "admin"
+    ];
   };
 
   users.users = {
-    griff = {
-      packages = with pkgs; [
-        git
-      ];
-    };
     duloc = {
       isNormalUser = true;
       # No password - empty password hash
@@ -142,10 +145,27 @@
       extraGroups = [ "wheel" ]; # Enable sudo
       # No password - will authenticate via SSH keys only
       hashedPassword = "";
-      packages = with pkgs; [
-        git
-      ];
     };
   };
+  security.sudo.extraRules = [
+    # Allow admin user to run nixos-rebuild without password
+    {
+      users = [ "admin" ];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nix-env";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "/run/current-system/sw/bin/switch-to-configuration";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
 }
