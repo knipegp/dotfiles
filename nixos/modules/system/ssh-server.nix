@@ -4,10 +4,10 @@
   options = {
     services.sshServer = {
 
-      user = lib.mkOption {
-        type = lib.types.str;
-        default = "";
-        description = "Username to add authorized SSH keys to";
+      users = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [];
+        description = "List of usernames to add authorized SSH keys to";
       };
 
       authorizedKeys = lib.mkOption {
@@ -25,9 +25,9 @@
   config = {
     services.openssh.enable = true;
 
-    users.users.${config.services.sshServer.user} = {
+    users.users = lib.genAttrs config.services.sshServer.users (user: {
       openssh.authorizedKeys.keys = config.services.sshServer.authorizedKeys;
-    };
+    });
 
     security.sudo.extraRules = [
       {

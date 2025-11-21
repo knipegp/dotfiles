@@ -37,7 +37,7 @@
     networkmanager.enable = true;
   };
   services = {
-    sshServer.user = "griff";
+    sshServer.users = [ "griff" ];
     sunshine.users = [ "griff" ];
     # Configure Lidarr, Radarr, and Sonarr with hostname
     lidarr-custom = {

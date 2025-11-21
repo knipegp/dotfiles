@@ -36,7 +36,7 @@
   };
 
   services = {
-    sshServer.user = "griff";
+    sshServer.users = [ "griff" "ripper" ];
   };
 
   # Set your time zone.
