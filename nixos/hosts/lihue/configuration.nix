@@ -38,7 +38,6 @@
   services = {
     sshServer.users = [
       "griff"
-      "ripper"
       "admin"
     ];
 
@@ -123,6 +122,12 @@
   };
 
   users.users = {
+    griff = {
+      packages = with pkgs; [
+        zellij
+        bottom
+      ];
+    };
     duloc = {
       isNormalUser = true;
       # No password - empty password hash
@@ -134,12 +139,6 @@
       # Explicitly disable SSH for duloc
       openssh.authorizedKeys.keys = [ ];
     };
-    ripper = {
-      isNormalUser = true;
-      packages = with pkgs; [
-        ffmpeg
-      ];
-    };
     admin = {
       isNormalUser = true;
       extraGroups = [ "wheel" ]; # Enable sudo
@@ -147,15 +146,17 @@
       hashedPassword = "";
     };
   };
-  security.sudo.extraRules = [
-    {
-      users = [ "admin" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
+  security = {
+    sudo.extraRules = [
+      {
+        users = [ "admin" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+  };
 }

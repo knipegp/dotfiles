@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -14,6 +14,7 @@
     ../../modules/system/printing.nix
     ../../modules/system/disk-management.nix
     ../../modules/system/harmonia-client.nix
+    ../../modules/system/ssh-server.nix
   ];
 
   # Laptop power management configuration
@@ -35,6 +36,13 @@
 
     # Enable networking
     networkmanager.enable = true;
+  };
+
+  services = {
+    sshServer.users = [
+      "griff"
+      "ripper"
+    ];
   };
 
   # Set your time zone.
@@ -65,7 +73,7 @@
   # networking.firewall.enable = false;
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
@@ -75,4 +83,26 @@
     "nix-command"
     "flakes"
   ];
+
+  # User configuration for ripper - video encoding/transcoding user
+  users.users.ripper = {
+    isNormalUser = true;
+    extraGroups = [
+      "video"
+      "render"
+    ]; # GPU access for hardware encoding
+    packages = with pkgs; [
+      ffmpeg-full # Full ffmpeg with all codec and hardware acceleration support
+      libva-utils # Utilities to check VAAPI setup (vainfo command)
+      intel-gpu-tools # Intel GPU monitoring and debugging tools
+    ];
+  };
+
+  # Allow intel_gpu_top to access performance monitoring
+  security.wrappers.intel_gpu_top = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_perfmon=ep";
+    source = "${pkgs.intel-gpu-tools}/bin/intel_gpu_top";
+  };
 }
