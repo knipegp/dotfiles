@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 {
   options = {
@@ -6,7 +11,7 @@
 
       users = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [];
+        default = [ ];
         description = "List of usernames to add authorized SSH keys to";
       };
 
@@ -25,7 +30,10 @@
   config = {
     services.openssh.enable = true;
 
-    users.users = lib.genAttrs config.services.sshServer.users (user: {
+    # Install kitty terminfo for SSH sessions from kitty terminal
+    environment.systemPackages = [ pkgs.kitty.terminfo ];
+
+    users.users = lib.genAttrs config.services.sshServer.users (_user: {
       openssh.authorizedKeys.keys = config.services.sshServer.authorizedKeys;
     });
 
