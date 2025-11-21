@@ -11,7 +11,7 @@
     ../../modules/system/desktop.nix
     ../../modules/system/hyprland.nix
     ../../modules/system/development.nix
-    ../../modules/system/personal-user.nix
+    ../../modules/system/griff-user.nix
     # ../../modules/system/khoj.nix
     ../../modules/system/collect-garbage.nix
     ../../modules/system/immich.nix
@@ -38,6 +38,7 @@
   };
   services = {
     sshServer.user = "griff";
+    sunshine.users = [ "griff" ];
     # Configure Lidarr, Radarr, and Sonarr with hostname
     lidarr-custom = {
       hostname = "haleakala";
@@ -64,9 +65,10 @@
       hostname = "haleakala";
     };
   };
-  nix.settings.trusted-users = [
-    "root"
-    "griff"
+  # Host-specific user groups
+  users.users.griff.extraGroups = [
+    "data-users" # for NAS disks
+    "cdrom" # for blu-ray drive
   ];
 
   # Set your time zone.

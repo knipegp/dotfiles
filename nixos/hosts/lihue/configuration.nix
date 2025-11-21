@@ -1,32 +1,23 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
     ../../modules/system/desktop.nix
     ../../modules/system/gnome.nix
-    ../../modules/system/development.nix
-    ../../modules/system/personal-user.nix
+    ../../modules/system/griff-user.nix
     ../../modules/system/collect-garbage.nix
     ../../modules/system/1password.nix
     ../../modules/system/syncthing.nix
-    ../../modules/system/laptop-power.nix
-    ../../modules/system/printing.nix
     ../../modules/system/disk-management.nix
     ../../modules/system/harmonia-client.nix
     ../../modules/system/ssh-server.nix
   ];
 
-  # Laptop power management configuration
-  laptopPower = {
-    # No resumeDevice configured - lihue doesn't have swap
-  };
-
   # Bootloader.
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-    kernelPackages = pkgs.linuxPackages_6_12;
   };
 
   networking = {
@@ -42,7 +33,10 @@
       enable = true;
       wifi.scanRandMacAddress = false;
     };
+  };
 
+  services = {
+    sshServer.user = "griff";
   };
 
   # Set your time zone.
@@ -72,10 +66,32 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
+
+  users.users = {
+    griff = {
+      packages = with pkgs; [
+        git
+      ];
+    };
+    duloc = {
+      isNormalUser = true;
+      packages = with pkgs; [
+        jellyfin-media-player
+        pkgs-unstable.firefox
+      ];
+    };
+    ripper = {
+      isNormalUser = true;
+      packages = with pkgs; [
+        ffmpeg
+      ];
+    };
+  };
+
 }
