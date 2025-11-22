@@ -60,18 +60,20 @@
   nixpkgs.config.packageOverrides = pkgs: {
     intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.graphics = {
+  hardware = {
     enableRedistributableFirmware = true;
-    enable = true;
-    extraPackages = with pkgs; [
-      mesa
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      libvdpau-va-gl
-      vpl-gpu-rt # for newer GPUs on NixOS >24.05 or unstable
-      intel-compute-runtime # opencl
-    ];
+    cpu.intel.updateMicrocode = true;
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        mesa
+        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+        libvdpau-va-gl
+        vpl-gpu-rt # for newer GPUs on NixOS >24.05 or unstable
+        intel-compute-runtime # opencl
+      ];
+    };
   };
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";

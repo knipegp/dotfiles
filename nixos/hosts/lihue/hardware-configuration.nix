@@ -60,19 +60,21 @@
   # Suitable for 8th gen Intel CPUs (Coffee Lake) and newer
 
   # Enable graphics drivers and hardware acceleration
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.graphics = {
+  hardware = {
+    cpu.intel.updateMicrocode = true;
     enableRedistributableFirmware = true;
-    enable = true;
-    extraPackages = with pkgs; [
-      # Intel VAAPI drivers
-      intel-media-driver # iHD driver for Broadwell (5th gen) and newer
-      intel-vaapi-driver # i965 driver (legacy, but useful fallback)
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        # Intel VAAPI drivers
+        intel-media-driver # iHD driver for Broadwell (5th gen) and newer
+        intel-vaapi-driver # i965 driver (legacy, but useful fallback)
 
-      # Additional codec support
-      libvdpau-va-gl
-      intel-compute-runtime # OpenCL support for Intel GPUs
-    ];
+        # Additional codec support
+        libvdpau-va-gl
+        intel-compute-runtime # OpenCL support for Intel GPUs
+      ];
+    };
   };
 
   # Ensure users can access GPU devices
