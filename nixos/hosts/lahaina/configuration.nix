@@ -22,9 +22,15 @@
     resumeDevice = "/dev/disk/by-uuid/762e6538-bd80-4d17-ac50-7d0ad80cf419";
   };
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader - Using GRUB due to corrupted EFI variables
+  # that prevent systemd-boot from reading EFI status
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    efiSupport = true;
+    useOSProber = true;
+  };
+  boot.loader.efi.canTouchEfiVariables = false;
 
   networking = {
     hostName = "lahaina"; # Define your hostname.
