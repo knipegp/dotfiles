@@ -60,9 +60,9 @@
   # Suitable for 8th gen Intel CPUs (Coffee Lake) and newer
 
   # Enable graphics drivers and hardware acceleration
+  hardware.cpu.intel.updateMicrocode = true;
   hardware.graphics = {
     enableRedistributableFirmware = true;
-    cpu.intel.updateMicrocode = true;
     enable = true;
     extraPackages = with pkgs; [
       # Intel VAAPI drivers

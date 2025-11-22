@@ -60,9 +60,9 @@
   nixpkgs.config.packageOverrides = pkgs: {
     intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
+  hardware.cpu.intel.updateMicrocode = true;
   hardware.graphics = {
     enableRedistributableFirmware = true;
-    cpu.intel.updateMicrocode = true;
     enable = true;
     extraPackages = with pkgs; [
       mesa
