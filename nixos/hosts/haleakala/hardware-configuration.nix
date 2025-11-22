@@ -2,7 +2,6 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
   modulesPath,
   pkgs,
@@ -65,7 +64,10 @@
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware = {
+    enableRedistributableFirmware = true;
+    cpu.amd.updateMicrocode = true;
+  };
 
   # For h264/h265 GPU encoding videos with ffmpeg
   hardware.opengl = {

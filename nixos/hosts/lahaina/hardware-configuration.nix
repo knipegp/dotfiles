@@ -2,7 +2,6 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
   pkgs,
   modulesPath,
@@ -57,18 +56,21 @@
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   nixpkgs.config.packageOverrides = pkgs: {
     intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
   hardware.graphics = {
+    enableRedistributableFirmware = true;
+    cpu.intel.updateMicrocode = true;
     enable = true;
     extraPackages = with pkgs; [
+      mesa
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       libvdpau-va-gl
       vpl-gpu-rt # for newer GPUs on NixOS >24.05 or unstable
+      intel-compute-runtime # opencl
     ];
   };
   environment.sessionVariables = {
