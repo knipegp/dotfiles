@@ -76,7 +76,7 @@ Deploy NixOS configurations to remote hosts over SSH:
 .. code:: bash
 
    # Deploy to remote host
-   sudo nixos-rebuild switch \
+   nixos-rebuild switch \
      --flake ~/dotfiles/nixos/#<hostname> \
      --target-host <user>@<host-or-ip> \
      --use-remote-sudo
