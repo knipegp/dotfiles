@@ -135,6 +135,7 @@
       packages = with pkgs; [
         jellyfin-media-player
         pkgs-unstable.firefox
+        pkgs-unstable.moonlight-qt
       ];
       # Explicitly disable SSH for duloc
       openssh.authorizedKeys.keys = [ ];

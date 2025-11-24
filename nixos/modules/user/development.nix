@@ -23,7 +23,8 @@ in
   };
   imports = [ ../../modules/user/python-dev.nix ];
   config = {
-    home.packages = with pkgs;
+    home.packages =
+      with pkgs;
       [
         # Basic terminal tools
         tealdeer
@@ -70,10 +71,12 @@ in
         nodejs
 
         claude-code
+        aider-chat-full
 
         # for raw image previews with ranger
         imagemagick
         ranger
+
       ]
       ++ lib.optionals (!isDarwin) [
         # Linux-only: ueberzugpp for terminal image previews
