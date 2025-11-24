@@ -63,6 +63,24 @@
   # Allow GNOME to manage suspend
   services.xserver.displayManager.gdm.autoSuspend = true;
 
+  # Configure GDM to allow empty passwords for duloc
+  security.pam.services.gdm.text = ''
+    # Account management.
+    account required pam_unix.so
+
+    # Authentication management.
+    auth     sufficient pam_unix.so likeauth nullok
+    auth     optional pam_gnome_keyring.so
+
+    # Password management.
+    password sufficient pam_unix.so nullok
+
+    # Session management.
+    session required pam_env.so conffile=/etc/pam/environment readenv=0
+    session required pam_unix.so
+    session optional pam_gnome_keyring.so auto_start
+  '';
+
   # System-wide power management settings
   powerManagement = {
     enable = true;
