@@ -41,15 +41,13 @@
       "admin"
     ];
 
-    # Allow sleep and suspend, applications will inhibit when needed (video playback, gaming)
     logind = {
-      lidSwitch = "suspend";
-      lidSwitchDocked = "suspend";
-      lidSwitchExternalPower = "suspend";
+      lidSwitch = "ignore";
+      lidSwitchDocked = "ignore";
+      lidSwitchExternalPower = "ignore";
       extraConfig = ''
-        HandlePowerKey=suspend
-        IdleAction=suspend
-        IdleActionSec=5min
+        HandlePowerKey=ignore
+        IdleAction=ignore
       '';
     };
 
@@ -60,8 +58,8 @@
     };
   };
 
-  # Allow GNOME to manage suspend
-  services.xserver.displayManager.gdm.autoSuspend = true;
+  # Disable GNOME autosuspend since we're handling it at the system level
+  services.xserver.displayManager.gdm.autoSuspend = false;
 
   # Configure GDM to allow empty passwords for duloc
   security.pam.services.gdm.text = ''
@@ -84,8 +82,17 @@
   # System-wide power management settings
   powerManagement = {
     enable = true;
-    powertop.enable = false;
+    powertop.enable = true;  # Enable powertop for additional power savings
+    cpuFreqGovernor = "powersave";  # Use powersave governor
   };
+  
+  # Enable aggressive power saving for WiFi
+  networking.networkmanager.wifi.powersave = true;
+  
+  # Enable power management for PCIe devices
+  powerManagement.powerUpCommands = ''
+    ${pkgs.pciutils}/bin/setpci -v -H1 -s 0:1f.0 0xa4.b=0
+  '';
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
