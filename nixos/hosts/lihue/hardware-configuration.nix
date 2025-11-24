@@ -2,8 +2,8 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
+  pkgs,
   modulesPath,
   ...
 }:
@@ -23,7 +23,7 @@
         "sd_mod"
         "sdhci_pci"
       ];
-      kernelModules = [ ];
+      kernelModules = [ "i915" ];
     };
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
@@ -56,5 +56,28 @@
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  # Enable Intel GPU hardware acceleration with VAAPI support
+  # Suitable for 8th gen Intel CPUs (Coffee Lake) and newer
+
+  # Enable graphics drivers and hardware acceleration
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+    enableRedistributableFirmware = true;
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        # Intel VAAPI drivers
+        intel-media-driver # iHD driver for Broadwell (5th gen) and newer
+        intel-vaapi-driver # i965 driver (legacy, but useful fallback)
+
+        # Additional codec support
+        libvdpau-va-gl
+        intel-compute-runtime # OpenCL support for Intel GPUs
+      ];
+    };
+  };
+
+  # Ensure users can access GPU devices
+  # The render group provides access to /dev/dri/renderD* devices
+  users.groups.render = { };
 }

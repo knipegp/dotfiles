@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 
@@ -25,6 +30,15 @@ with lib;
         proxyPass = "http://127.0.0.1:8096";
         proxyWebsockets = true;
       };
+    };
+    users.users.jellyfin = {
+      extraGroups = [
+        "video"
+        "render"
+      ]; # GPU access for hardware encoding
+      packages = with pkgs; [
+        jellyfin-ffmpeg
+      ];
     };
 
   };

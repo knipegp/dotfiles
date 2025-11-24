@@ -38,18 +38,17 @@
   services = {
     sshServer.users = [
       "griff"
-      "ripper"
       "admin"
     ];
 
-    # Disable sleep and suspend for server operation
     logind = {
-      lidSwitch = "ignore";
-      lidSwitchDocked = "ignore";
-      lidSwitchExternalPower = "ignore";
+      lidSwitch = "lock";  # Lock the screen instead of ignoring
+      lidSwitchDocked = "lock";  # Lock when docked too
+      lidSwitchExternalPower = "lock";
       extraConfig = ''
-        HandlePowerKey=ignore
-        IdleAction=ignore
+        HandlePowerKey=poweroff
+        IdleAction=lock
+        IdleActionSec=10min
       '';
     };
 
@@ -60,27 +59,41 @@
     };
   };
 
-  # Prevent GNOME from suspending
-  systemd = {
-    services."getty@tty1".enable = false;
-    services."autovt@tty1".enable = false;
-    # Additional systemd sleep settings
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-      AllowSuspendThenHibernate=no
-      AllowHybridSleep=no
-    '';
-  };
-
-  # Disable automatic suspend in GNOME
+  # Disable GNOME autosuspend since we're handling it at the system level
   services.xserver.displayManager.gdm.autoSuspend = false;
+
+  # Configure GDM to allow empty passwords for duloc
+  security.pam.services.gdm.text = ''
+    # Account management.
+    account required pam_unix.so
+
+    # Authentication management.
+    auth     sufficient pam_unix.so likeauth nullok
+    auth     optional pam_gnome_keyring.so
+
+    # Password management.
+    password sufficient pam_unix.so nullok
+
+    # Session management.
+    session required pam_env.so conffile=/etc/pam/environment readenv=0
+    session required pam_unix.so
+    session optional pam_gnome_keyring.so auto_start
+  '';
 
   # System-wide power management settings
   powerManagement = {
     enable = true;
-    powertop.enable = false;
+    powertop.enable = true;  # Enable powertop for additional power savings
+    cpuFreqGovernor = "schedutil";  # Use schedutil for best performance/power balance
   };
+  
+  # Enable balanced power saving for WiFi (rather than aggressive)
+  networking.networkmanager.wifi.powersave = true;
+  
+  # Enable power management for PCIe devices
+  powerManagement.powerUpCommands = ''
+    ${pkgs.pciutils}/bin/setpci -v -H1 -s 0:1f.0 0xa4.b=0
+  '';
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -123,22 +136,23 @@
   };
 
   users.users = {
+    griff = {
+      packages = with pkgs; [
+        zellij
+        bottom
+      ];
+    };
     duloc = {
       isNormalUser = true;
-      # No password - empty password hash
-      hashedPassword = "";
+      # Set an initial empty password to allow passwordless login
+      initialPassword = "";
       packages = with pkgs; [
         jellyfin-media-player
         pkgs-unstable.firefox
+        pkgs-unstable.moonlight-qt
       ];
       # Explicitly disable SSH for duloc
       openssh.authorizedKeys.keys = [ ];
-    };
-    ripper = {
-      isNormalUser = true;
-      packages = with pkgs; [
-        ffmpeg
-      ];
     };
     admin = {
       isNormalUser = true;
@@ -147,15 +161,17 @@
       hashedPassword = "";
     };
   };
-  security.sudo.extraRules = [
-    {
-      users = [ "admin" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
+  security = {
+    sudo.extraRules = [
+      {
+        users = [ "admin" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+  };
 }

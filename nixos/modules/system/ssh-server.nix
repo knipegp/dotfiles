@@ -46,6 +46,10 @@
             options = [ "NOPASSWD" ];
           }
           {
+            command = "${config.systemd.package}/bin/systemctl reboot";
+            options = [ "NOPASSWD" ];
+          }
+          {
             command = "/run/current-system/sw/bin/systemctl suspend";
             options = [ "NOPASSWD" ];
           }

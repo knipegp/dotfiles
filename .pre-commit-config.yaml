@@ -44,6 +44,12 @@ repos:
   #     - id: deadnix
   #       args: ['--edit']
 
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.42.0
+    hooks:
+      - id: markdownlint
+        args: ['--config', '.markdownlint.json']
+
   - repo: local
     hooks:
       - id: statix
