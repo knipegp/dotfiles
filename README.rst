@@ -213,6 +213,9 @@ Code Quality
    # Check shell scripts
    shellcheck script.sh
 
+   # Lint Markdown files
+   markdownlint '**/*.md'
+
 **************
  Architecture
 **************
