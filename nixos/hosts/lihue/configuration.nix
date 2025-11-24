@@ -41,14 +41,15 @@
       "admin"
     ];
 
-    # Disable sleep and suspend for server operation
+    # Allow sleep and suspend, applications will inhibit when needed (video playback, gaming)
     logind = {
-      lidSwitch = "ignore";
-      lidSwitchDocked = "ignore";
-      lidSwitchExternalPower = "ignore";
+      lidSwitch = "suspend";
+      lidSwitchDocked = "suspend";
+      lidSwitchExternalPower = "suspend";
       extraConfig = ''
-        HandlePowerKey=ignore
-        IdleAction=ignore
+        HandlePowerKey=suspend
+        IdleAction=suspend
+        IdleActionSec=5min
       '';
     };
 
@@ -59,21 +60,8 @@
     };
   };
 
-  # Prevent GNOME from suspending
-  systemd = {
-    services."getty@tty1".enable = false;
-    services."autovt@tty1".enable = false;
-    # Additional systemd sleep settings
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-      AllowSuspendThenHibernate=no
-      AllowHybridSleep=no
-    '';
-  };
-
-  # Disable automatic suspend in GNOME
-  services.xserver.displayManager.gdm.autoSuspend = false;
+  # Allow GNOME to manage suspend
+  services.xserver.displayManager.gdm.autoSuspend = true;
 
   # System-wide power management settings
   powerManagement = {
@@ -130,8 +118,8 @@
     };
     duloc = {
       isNormalUser = true;
-      # No password - empty password hash
-      hashedPassword = "";
+      # Set an initial empty password to allow passwordless login
+      initialPassword = "";
       packages = with pkgs; [
         jellyfin-media-player
         pkgs-unstable.firefox
