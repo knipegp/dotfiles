@@ -84,10 +84,10 @@
   powerManagement = {
     enable = true;
     powertop.enable = true;  # Enable powertop for additional power savings
-    cpuFreqGovernor = "powersave";  # Use powersave governor
+    cpuFreqGovernor = "schedutil";  # Use schedutil for best performance/power balance
   };
   
-  # Enable aggressive power saving for WiFi
+  # Enable balanced power saving for WiFi (rather than aggressive)
   networking.networkmanager.wifi.powersave = true;
   
   # Enable power management for PCIe devices
