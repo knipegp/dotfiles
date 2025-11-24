@@ -42,12 +42,13 @@
     ];
 
     logind = {
-      lidSwitch = "ignore";
-      lidSwitchDocked = "ignore";
-      lidSwitchExternalPower = "ignore";
+      lidSwitch = "lock";  # Lock the screen instead of ignoring
+      lidSwitchDocked = "lock";  # Lock when docked too
+      lidSwitchExternalPower = "lock";
       extraConfig = ''
-        HandlePowerKey=ignore
-        IdleAction=ignore
+        HandlePowerKey=poweroff
+        IdleAction=lock
+        IdleActionSec=10min
       '';
     };
 
