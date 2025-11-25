@@ -66,20 +66,17 @@
 
   # Configure GNOME to never lock the screen
   programs.dconf.enable = true;
-  services.dconf = {
-    enable = true;
-    settings = {
-      "org/gnome/desktop/session" = {
-        idle-delay = "uint32 0";
-      };
-      "org/gnome/desktop/screensaver" = {
-        lock-enabled = false;
-        lock-delay = "uint32 0";
-        idle-activation-enabled = false;
-      };
-      "org/gnome/desktop/lockdown" = {
-        disable-lock-screen = true;
-      };
+  dconf.settings = {
+    "org/gnome/desktop/session" = {
+      idle-delay = "uint32 0";
+    };
+    "org/gnome/desktop/screensaver" = {
+      lock-enabled = false;
+      lock-delay = "uint32 0";
+      idle-activation-enabled = false;
+    };
+    "org/gnome/desktop/lockdown" = {
+      disable-lock-screen = true;
     };
   };
 
