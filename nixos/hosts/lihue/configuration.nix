@@ -42,13 +42,13 @@
     ];
 
     logind = {
-      lidSwitch = "lock";  # Lock the screen instead of ignoring
-      lidSwitchDocked = "lock";  # Lock when docked too
-      lidSwitchExternalPower = "lock";
+      lidSwitch = "ignore"; # Don't lock on lid close
+      lidSwitchDocked = "ignore"; # Don't lock when docked
+      lidSwitchExternalPower = "ignore";
       extraConfig = ''
         HandlePowerKey=poweroff
-        IdleAction=lock
-        IdleActionSec=10min
+        IdleAction=ignore
+        IdleActionSec=0
       '';
     };
 
@@ -59,8 +59,29 @@
     };
   };
 
-  # Disable GNOME autosuspend since we're handling it at the system level
-  services.xserver.displayManager.gdm.autoSuspend = false;
+  # Disable GNOME autosuspend and locking features
+  services.xserver.displayManager.gdm = {
+    autoSuspend = false;
+  };
+
+  # Configure GNOME to never lock the screen
+  programs.dconf.enable = true;
+  services.dconf = {
+    enable = true;
+    settings = {
+      "org/gnome/desktop/session" = {
+        idle-delay = "uint32 0";
+      };
+      "org/gnome/desktop/screensaver" = {
+        lock-enabled = false;
+        lock-delay = "uint32 0";
+        idle-activation-enabled = false;
+      };
+      "org/gnome/desktop/lockdown" = {
+        disable-lock-screen = true;
+      };
+    };
+  };
 
   # Configure GDM to allow empty passwords for duloc
   security.pam.services.gdm.text = ''
@@ -83,13 +104,13 @@
   # System-wide power management settings
   powerManagement = {
     enable = true;
-    powertop.enable = true;  # Enable powertop for additional power savings
-    cpuFreqGovernor = "schedutil";  # Use schedutil for best performance/power balance
+    powertop.enable = true; # Enable powertop for additional power savings
+    cpuFreqGovernor = "schedutil"; # Use schedutil for best performance/power balance
   };
-  
+
   # Enable balanced power saving for WiFi (rather than aggressive)
   networking.networkmanager.wifi.powersave = true;
-  
+
   # Enable power management for PCIe devices
   powerManagement.powerUpCommands = ''
     ${pkgs.pciutils}/bin/setpci -v -H1 -s 0:1f.0 0xa4.b=0
