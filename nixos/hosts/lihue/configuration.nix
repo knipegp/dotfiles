@@ -66,7 +66,7 @@
 
   # Configure GNOME to never lock the screen
   programs.dconf.enable = true;
-  dconf.settings = {
+  programs.dconf.settings = {
     "org/gnome/desktop/session" = {
       idle-delay = "uint32 0";
     };
