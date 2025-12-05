@@ -21,6 +21,7 @@
     ../../modules/system/ssh-server.nix
     ../../modules/system/lidarr.nix
     ../../modules/system/radarr.nix
+    ../../modules/system/budget-server.nix
     ../../modules/system/sonarr.nix
     ../../modules/system/jellyfin.nix
     ../../modules/system/navidrome.nix

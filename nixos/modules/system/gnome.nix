@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   # Enable GNOME desktop environment
@@ -28,4 +28,32 @@
 
   # Audio configuration (shared with Hyprland)
   security.rtkit.enable = true;
+
+  # Disable power management in GNOME to prevent sleeping
+  programs.dconf = {
+    enable = true;
+    profiles = {
+      user = {
+        databases = [
+          {
+            settings = {
+              "org/gnome/settings-daemon/plugins/power" = {
+                active = false;
+                sleep-inactive-ac-type = "nothing";
+                sleep-inactive-battery-type = "nothing";
+                sleep-inactive-ac-timeout = lib.gvariant.mkUint32 0;
+                sleep-inactive-battery-timeout = lib.gvariant.mkUint32 0;
+              };
+              "org/gnome/desktop/session" = {
+                idle-delay = lib.gvariant.mkUint32 0;
+              };
+              "org/gnome/desktop/screensaver" = {
+                idle-activation-enabled = false;
+              };
+            };
+          }
+        ];
+      };
+    };
+  };
 }

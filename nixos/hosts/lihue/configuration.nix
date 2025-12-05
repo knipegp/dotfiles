@@ -47,6 +47,9 @@
       lidSwitchExternalPower = "ignore";
       extraConfig = ''
         HandlePowerKey=poweroff
+        HandleSuspendKey=ignore
+        HandleHibernateKey=ignore
+        HandleLidSwitch=ignore
         IdleAction=ignore
         IdleActionSec=0
       '';
@@ -57,26 +60,26 @@
       enable = true;
       user = "duloc";
     };
+
+    # Disable GNOME power management to prevent sleeping
+    # This is handled via dconf settings in the GNOME module
   };
 
-  # Disable GNOME autosuspend and locking features
-  services.xserver.displayManager.gdm = {
-    autoSuspend = false;
-  };
+  # Disable system sleep/hibernate to prevent the system from sleeping
+  systemd = {
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowSuspendThenHibernate=no
+      AllowHybridSleep=no
+    '';
 
-  # Configure GNOME to never lock the screen
-  programs.dconf.enable = true;
-  programs.dconf.settings = {
-    "org/gnome/desktop/session" = {
-      idle-delay = "uint32 0";
-    };
-    "org/gnome/desktop/screensaver" = {
-      lock-enabled = false;
-      lock-delay = "uint32 0";
-      idle-activation-enabled = false;
-    };
-    "org/gnome/desktop/lockdown" = {
-      disable-lock-screen = true;
+    # Mask sleep targets to completely disable sleep states
+    targets = {
+      sleep.enable = false;
+      suspend.enable = false;
+      hibernate.enable = false;
+      hybrid-sleep.enable = false;
     };
   };
 
@@ -101,16 +104,21 @@
   # System-wide power management settings
   powerManagement = {
     enable = true;
-    powertop.enable = true; # Enable powertop for additional power savings
-    cpuFreqGovernor = "schedutil"; # Use schedutil for best performance/power balance
+    cpuFreqGovernor = "schedutil";
   };
 
-  # Enable balanced power saving for WiFi (rather than aggressive)
+  # System doesn't use wifi
   networking.networkmanager.wifi.powersave = true;
 
-  # Enable power management for PCIe devices
+# Enable power management for PCIe devices
   powerManagement.powerUpCommands = ''
     ${pkgs.pciutils}/bin/setpci -v -H1 -s 0:1f.0 0xa4.b=0
+  '';
+
+  # Additional systemd settings to prevent sleeping
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=30s
+    DefaultTimeoutStartSec=30s
   '';
 
   # Set your time zone.
