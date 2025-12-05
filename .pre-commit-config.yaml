@@ -27,7 +27,7 @@ repos:
           - --strict
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
         args: [--exclude=SC1090]
@@ -37,12 +37,6 @@ repos:
     rev: v1.3.0
     hooks:
       - id: nixpkgs-fmt
-
-  # - repo: https://github.com/astro/deadnix
-  #   rev: v1.2.1
-  #   hooks:
-  #     - id: deadnix
-  #       args: ['--edit']
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.42.0

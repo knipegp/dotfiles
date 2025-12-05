@@ -36,10 +36,11 @@ in
         procs
         fd
         bat
-        neofetch
+        fastfetch
         unzip
         zellij
         gh
+        direnv
 
         # Common project tools
         prek
@@ -71,7 +72,7 @@ in
         nodejs
 
         claude-code
-        aider-chat-full
+        opencode
 
         # for raw image previews with ranger
         imagemagick
@@ -194,6 +195,15 @@ in
           if [[ $- == *i* ]] && command -v motd >/dev/null 2>&1; then
               motd
           fi
+
+          eval "$(direnv hook bash)"
+
+          alias opencode="op run -- opencode"
+
+          export BRAVE_API_KEY=op://Private/brave_search_api_key/credential
+          export CONTEXT7_API_KEY=op://Private/context7_api_key/credential
+
+          SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
         '';
       };
     };
