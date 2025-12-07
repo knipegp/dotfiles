@@ -73,6 +73,7 @@ in
 
         claude-code
         opencode
+        spec-kit
 
         # for raw image previews with ranger
         imagemagick
