@@ -104,6 +104,9 @@ in
           source = ../../files/ranger/scope.sh;
           executable = true;
         };
+        "${config.home.homeDirectory}/.config/opencode/opencode.json" = {
+          source = ../../files/opencode/opencode.json;
+        };
       };
     };
 
@@ -198,7 +201,7 @@ in
 
           eval "$(direnv hook bash)"
 
-          alias opencode="op run -- opencode"
+          alias opencode="op run --no-masking -- opencode"
 
           export BRAVE_API_KEY=op://Private/brave_search_api_key/credential
           export CONTEXT7_API_KEY=op://Private/context7_api_key/credential
