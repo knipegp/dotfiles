@@ -10,19 +10,29 @@ with lib;
     };
   };
 
-  imports = [ ./nginx.nix ];
+  imports = [
+    ./nginx.nix
+    ./mkcert.nix
+  ];
 
   config = {
     # Enable the budget-server service
-    services.actual = {
-      enable = true;
-    };
-
-    # Enable nginx and configure reverse proxy
-    services.nginx.virtualHosts."actual.${config.services.budget-server-custom.hostname}" = {
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:3000";
-        proxyWebsockets = true;
+    services = {
+      actual = {
+        enable = true;
+      };
+      mkcert.certs.actual = [
+        "actual.${config.services.budget-server-custom.hostname}"
+      ];
+      # Enable nginx and configure reverse proxy
+      nginx.virtualHosts."actual.${config.services.budget-server-custom.hostname}" = {
+        enableSSL = true;
+        sslCertificate = "/etc/mkcert/certs/actual/cert.pem";
+        sslCertificateKey = "/etc/mkcert/certs/actual/key.pem";
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:3000";
+          proxyWebsockets = true;
+        };
       };
     };
   };

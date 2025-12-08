@@ -68,7 +68,7 @@
     "${config.xdg.configHome}/hypr" = {
       source = ../../files/hyprland;
       recursive = true;
-      onChange = "${pkgs.hyprland}/bin/hyprctl reload";
+      onChange = "${pkgs-stable.hyprland}/bin/hyprctl reload";
     };
     "${config.xdg.configHome}/waybar" = {
       source = ../../files/waybar;

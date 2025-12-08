@@ -27,6 +27,7 @@
     ../../modules/system/navidrome.nix
     ../../modules/system/sunshine.nix
     ../../modules/system/harmonia.nix
+    ../../modules/system/mkcert.nix
   ];
 
   # Bootloader.
