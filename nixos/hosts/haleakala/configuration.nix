@@ -27,7 +27,6 @@
     ../../modules/system/navidrome.nix
     ../../modules/system/sunshine.nix
     ../../modules/system/harmonia.nix
-    ../../modules/system/mkcert.nix
   ];
 
   # Bootloader.
@@ -64,6 +63,9 @@
       hostname = "haleakala";
     };
     harmonia-custom = {
+      hostname = "haleakala";
+    };
+    budget-server-custom = {
       hostname = "haleakala";
     };
   };
