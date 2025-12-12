@@ -56,9 +56,9 @@
 
   # Explicitly enable DHCP only on enp5s0 to ensure it's the default route
   networking = {
-    useDHCP = lib.mkDefault false;
+    useDHCP = false;
     interfaces.enp5s0 = {
-      useDHCP = lib.mkDefault true;
+      ipv4.addresses = [ { address = "10.200.0.4"; prefixLength = 24; } ];
       wakeOnLan.enable = true;
     };
   };
