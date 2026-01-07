@@ -85,5 +85,12 @@
         '';
       };
     };
+
+    # NetworkManager configuration to prevent wifi radio from disabling on resume
+    networking.networkmanager.settings = {
+      wifi = {
+        powersave = "off";
+      };
+    };
   };
 }

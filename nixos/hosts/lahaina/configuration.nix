@@ -25,6 +25,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  services.tailscale.enable = true;
   networking = {
     hostName = "lahaina"; # Define your hostname.
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -36,6 +37,17 @@
     # Enable networking
     networkmanager.enable = true;
   };
+
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
+    extraConfig = ''
+      DNSSECMode=no
+    '';
+  };
+
+  # Let NetworkManager provide DNS via DHCP (don't hardcode nameservers)
+  networking.nameservers = [ ];
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
