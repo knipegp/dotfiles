@@ -50,6 +50,18 @@
             ./hosts/lahaina/configuration.nix
           ];
         };
+        hana = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+            pkgs-unstable = import nixpkgs-unstable {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            };
+          };
+          modules = [
+            ./hosts/hana/configuration.nix
+          ];
+        };
       };
     };
 }
