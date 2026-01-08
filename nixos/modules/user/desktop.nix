@@ -1,10 +1,4 @@
-{
-  config,
-  pkgs,
-  pkgs-stable,
-  ...
-}:
-{
+{ config, pkgs, pkgs-stable, ... }: {
   home.packages = with pkgs; [
     discord
     # Needed for DRM websites (Netflix)
@@ -24,7 +18,9 @@
     killall
     wpaperd
     font-awesome
+    hypridle
     hyprlock
+    imagemagick # for hyprlock.sh blur script
     grim # screenshot functionality
     slurp # screenshot functionality
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
@@ -69,6 +65,9 @@
       source = ../../files/hyprland;
       recursive = true;
       onChange = "${pkgs-stable.hyprland}/bin/hyprctl reload";
+    };
+    "${config.xdg.configHome}/hypr/hypridle.conf" = {
+      source = ../../files/hyprland/hypridle.conf;
     };
     "${config.xdg.configHome}/waybar" = {
       source = ../../files/waybar;

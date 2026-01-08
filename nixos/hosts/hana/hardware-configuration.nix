@@ -4,6 +4,7 @@
 {
   config,
   lib,
+  pkgs,
   modulesPath,
   ...
 }:
@@ -58,4 +59,26 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  # Intel Alder Lake-N Graphics Configuration
+  # Device: Intel Corporation Alder Lake-N [Intel Graphics] (8086:46d4)
+  # Driver: i915
+  boot.kernelParams = [ "i915.force_probe=46d4" ];
+
+  # Enable hardware acceleration and graphics support
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # VAAPI driver for newer Intel GPUs (>= Broadwell)
+      intel-vaapi-driver # Legacy VAAPI driver (better browser support)
+      vaapiVdpau # VDPAU backend for VAAPI
+      intel-compute-runtime # OpenCL support
+      vpl-gpu-rt # Intel Video Processing Library for QSV (11th gen+)
+    ];
+  };
+
+  # Set intel-media-driver as default VAAPI driver for modern hardware
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+  };
 }

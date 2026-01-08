@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "openrouter/anthropic/claude-haiku-4.5",
+  "model": "openrouter/anthropic/claude-sonnet-4.5",
   "mcp": {
     "context7": {
       "type": "remote",
@@ -20,5 +20,15 @@
   "tools": {
     "context7": true,
     "brave-search": true
+  },
+  "permission": {
+    "bash": {
+      "*": "ask",
+      "ls *": "allow",
+      "find *": "allow",
+      "head *": "allow",
+      "grep *": "allow",
+      "cat *": "allow"
+    }
   }
 }
