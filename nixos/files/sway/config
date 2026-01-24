@@ -22,13 +22,16 @@ set $refresh_i3status killall -SIGUSR1 i3status
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start bemenu (a program launcher)
 bindsym $mod+d exec --no-startup-id bemenu-run -l 10 --scrollbar autohide
+
+# emoji picker
+bindsym $mod+Shift+e exec rofi -modi emoji -show emoji
 
 # change focus
 bindsym $mod+h focus left
@@ -153,31 +156,39 @@ hide_edge_borders smart_no_gaps
 
 default_border pixel 3
 
-for_window [title="Picture-in-Picture"] sticky enable
-
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
-
-# From: https://unix.stackexchange.com/a/325972
-include ~/.config/sway/config.d/*.conf
-mode "$mode_system" {
-    bindsym l exec --no-startup-id $Locker, mode "default"
-    bindsym e exec --no-startup-id $Messenger exit, mode "default"
-    bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
-    bindsym h exec --no-startup-id $Locker && systemctl hibernate, mode "default"
-    bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
-
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+for_window [title="Picture-in-Picture"] {
+    floating enable
+    sticky enable
+    resize set 640 360
 }
 
-bindsym $mod+0 mode "$mode_system"
+# From: https://unix.stackexchange.com/a/325972
+# Include config files first to load $Locker and $Messenger variables
+include ~/.config/sway/config.d/*.conf
+
+# Power menu using wofi
+bindsym $mod+0 exec bash $HOME/.config/waybar/scripts/power_control.sh
+
+# Lock screen when lid closes
+bindswitch --reload --locked lid:on exec loginctl lock-session
+# Re-enable monitor when lid opens
+bindswitch --reload --locked lid:off output eDP-1 enable
 
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar swaybar_command waybar
-include /etc/sway/config.d/*
 
+# Autostart services
+exec mako --default-timeout 5000
+exec swayidle -w \
+    timeout 840 'brightnessctl -s set 10%' resume 'brightnessctl -r' \
+    timeout 900 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+    timeout 960 '~/.config/waybar/scripts/swaylock-blur.sh' \
+    before-sleep '~/.config/waybar/scripts/swaylock-blur.sh'
 exec wpaperd
+
+# Monitor/output configuration
+output * bg ~/.config/wallpaper/planets.jpeg fill
+
+include /etc/sway/config.d/*

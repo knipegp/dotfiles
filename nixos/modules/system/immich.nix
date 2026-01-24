@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{ config
+, lib
+, pkgs-unstable
+, ...
+}:
 
 with lib;
 {
@@ -14,6 +18,7 @@ with lib;
     hardware.graphics.enable = true;
     services.immich = {
       enable = true;
+      package = pkgs-unstable.immich;
       host = "127.0.0.1";
       openFirewall = false;
       mediaLocation = "/mnt/data1/immich";

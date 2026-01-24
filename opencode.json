@@ -8,5 +8,10 @@
   },
   "tools": {
     "nixos": true
+  },
+  "permission": {
+    "bash": {
+      "home-manager build *": "allow"
+    }
   }
 }

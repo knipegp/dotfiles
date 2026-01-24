@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{ config
+, lib
+, pkgs-unstable
+, ...
+}:
 
 with lib;
 {
@@ -20,13 +24,14 @@ with lib;
     services = {
       actual = {
         enable = true;
+        package = pkgs-unstable.actual-server;
       };
       mkcert.certs.actual = [
         "actual.${config.services.budget-server-custom.hostname}"
       ];
       # Enable nginx and configure reverse proxy
       nginx.virtualHosts."actual.${config.services.budget-server-custom.hostname}" = {
-        enableSSL = true;
+        onlySSL = true;
         sslCertificate = "/etc/mkcert/certs/actual/cert.pem";
         sslCertificateKey = "/etc/mkcert/certs/actual/key.pem";
         locations."/" = {

@@ -16,7 +16,7 @@ with lib;
     # Enable Harmonia service
     services.harmonia = {
       enable = true;
-      signKeyPath = "/var/lib/harmonia/secret-key";
+      signKeyPaths = [ "/var/lib/harmonia/secret-key" ];
     };
 
     # Enable nginx and configure reverse proxy

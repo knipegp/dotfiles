@@ -1,4 +1,9 @@
-{ config, pkgs, pkgs-stable, ... }: {
+{ config
+, pkgs
+, pkgs-stable
+, ...
+}:
+{
   home.packages = with pkgs; [
     discord
     # Needed for DRM websites (Netflix)
@@ -10,17 +15,14 @@
     # Photo editing
     darktable
 
-    # Hyprland
+    # Shared Wayland tools (used by both Hyprland and Sway)
     mako
     brightnessctl
-    wofi
     waybar
     killall
     wpaperd
     font-awesome
-    hypridle
-    hyprlock
-    imagemagick # for hyprlock.sh blur script
+    imagemagick # for compositor lock screen blur scripts
     grim # screenshot functionality
     slurp # screenshot functionality
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
@@ -39,7 +41,10 @@
   ];
 
   programs = {
-    librewolf.enable = true;
+    # Note: librewolf requires compilation (no maintained binary package in nixpkgs)
+    # First build takes ~1 hour, but subsequent builds use cache
+    # Alternative: use firefox which has good binary cache support
+    # librewolf.enable = true;
     firefox.enable = true;
     rofi = {
       enable = true;
@@ -56,31 +61,7 @@
   };
 
   home.file = {
-    # "${config.xdg.configHome}/sway" = {
-    #   source = ../files/sway;
-    #   recursive = true;
-    #   onChange = "${pkgs.sway}/bin/swaymsg reload";
-    # };
-    "${config.xdg.configHome}/hypr" = {
-      source = ../../files/hyprland;
-      recursive = true;
-      onChange = "${pkgs-stable.hyprland}/bin/hyprctl reload";
-    };
-    "${config.xdg.configHome}/hypr/hypridle.conf" = {
-      source = ../../files/hyprland/hypridle.conf;
-    };
-    "${config.xdg.configHome}/waybar" = {
-      source = ../../files/waybar;
-      recursive = true;
-      onChange = "${pkgs.killall}/bin/killall -SIGUSR2 .waybar-wrapped";
-    };
-    "${config.xdg.configHome}/waybar/scripts" = {
-      source = ../../files/waybar/scripts;
-      recursive = true;
-    };
-    # "${config.xdg.configHome}/alacritty/alacritty.toml" = {
-    #   source = ../files/alacritty/alacritty.toml;
-    # };
+    # Shared wallpaper config
     "${config.xdg.configHome}/wpaperd/wallpaper.toml" = {
       source = ../../files/wpaperd/wallpaper.toml;
     };
@@ -91,12 +72,6 @@
         sha256 = "148c766ygl7wsyi2nnv34y0bkz2w9c5x9d9w0a4xpcp7h835h7j0";
       };
     };
-    # "${config.home.homeDirectory}/.config/eww/include/saimoomedits/eww-widgets" = {
-    #   source = builtins.fetchGit {
-    #     url = "https://github.com/saimoomedits/eww-widgets.git";
-    #     rev = "cfb2523a4e37ed2979e964998d9a4c37232b2975";
-    #   };
-    # };
     "${config.home.homeDirectory}/.local/bin/screenshot" = {
       source = ../../files/scripts/screenshot.sh;
       executable = true;

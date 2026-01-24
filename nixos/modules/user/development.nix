@@ -1,8 +1,8 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
+{ lib
+, config
+, pkgs
+, opencode-custom
+, ...
 }:
 
 let
@@ -58,7 +58,7 @@ in
         nil
         statix
         deadnix
-        nixfmt-classic
+        nixfmt
 
         pandoc
 
@@ -72,7 +72,7 @@ in
         nodejs
 
         claude-code
-        opencode
+        opencode-custom
         spec-kit
 
         # for raw image previews with ranger

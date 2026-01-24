@@ -5,6 +5,14 @@
 - **Pre-commit**: `prek run` (runs all hooks on staged files)
 - **Lint Nix**: `statix check` (checks for repeated keys, inherit patterns)
 - **Shell scripts**: `shellcheck script.sh`
+- **Test Home Manager build**: `home-manager build --flake ~/dotfiles/nixos/home-manager/` (builds without applying changes)
+- **Apply Home Manager**: `home-manager switch -b backup --flake ~/dotfiles/nixos/home-manager/`
+- **Test NixOS build**: `sudo nixos-rebuild build --flake ~/dotfiles/nixos/#<hostname>` (builds without applying changes)
+- **Apply NixOS**: `sudo nixos-rebuild switch --flake ~/dotfiles/nixos/#<hostname>`
+
+**IMPORTANT**: Always run build/test commands BEFORE applying changes to catch errors early.
+
+**Note**: Home Manager now uses per-host configurations (griff@haleakala, griff@lahaina, etc.) to support host-specific settings.
 
 ## Code Style Guidelines
 

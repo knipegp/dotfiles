@@ -9,19 +9,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    opencode.url = "github:anomalyco/opencode/v1.1.31";
   };
 
   outputs =
-    {
-      nixpkgs,
-      home-manager,
-      nixpkgs-stable,
-      ...
+    { nixpkgs
+    , home-manager
+    , nixpkgs-stable
+    , opencode
+    , ...
     }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+      opencode-custom = opencode.packages.${system}.opencode;
     in
     {
       homeConfigurations."griff" = home-manager.lib.homeManagerConfiguration {
@@ -33,7 +35,12 @@
           ./home.nix
           ../modules/user/development.nix
           ../modules/user/desktop.nix
-          { _module.args = { inherit pkgs-stable; }; }
+          ../modules/user/desktop-sway.nix
+          {
+            _module.args = {
+              inherit pkgs-stable opencode-custom;
+            };
+          }
           ../modules/user/personal.nix
           ../modules/user/desktop-development.nix
           ../modules/user/gnupg.nix

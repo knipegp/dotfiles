@@ -36,7 +36,8 @@ let
     '';
   };
 
-in {
+in
+{
   environment.systemPackages = with pkgs; [
     dbus # make dbus-update-activation-environment available in the path
     dbus-sway-environment
@@ -55,9 +56,20 @@ in {
     mako # notification system developed by swaywm maintainer
     wdisplays # tool to configure displays
     alsa-utils # provides amixer to control volume
+    polkit_gnome
+    brightnessctl
+    libsForQt5.qt5.qtwayland
   ];
 
   services = {
+    displayManager = {
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+        theme = "breeze";
+      };
+      defaultSession = "sway";
+    };
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -82,13 +94,49 @@ in {
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
+  security.rtkit.enable = true;
+
+  security.polkit = {
+    enable = true;
+    extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (
+          subject.isInGroup("users")
+            && (
+              action.id == "org.freedesktop.login1.reboot" ||
+              action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+              action.id == "org.freedesktop.login1.power-off" ||
+              action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+            )
+          )
+        {
+          return polkit.Result.YES;
+        }
+      });
+    '';
+  };
+
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
+
   # enable sway window manager
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
   };
 
-  environment.loginShellInit = ''
-    [[ "$(tty)" == /dev/tty1 ]] && sway
-  '';
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
