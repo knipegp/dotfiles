@@ -60,6 +60,7 @@ in
     brightnessctl
     libsForQt5.qt5.qtwayland
     where-is-my-sddm-theme
+    jq # for parsing swaymsg JSON output in lid scripts
   ];
 
   services = {

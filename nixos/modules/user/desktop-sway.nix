@@ -19,6 +19,10 @@
       source = ../../files/sway/config.d;
       recursive = true;
     };
+    "${config.xdg.configHome}/sway/scripts" = {
+      source = ../../files/sway/scripts;
+      recursive = true;
+    };
     "${config.xdg.configHome}/waybar" = {
       source = ../../files/waybar-sway;
       recursive = true;

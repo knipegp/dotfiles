@@ -76,6 +76,7 @@
       # Logind settings for better suspend behavior
       logind = {
         lidSwitch = "suspend-then-hibernate";
+        lidSwitchDocked = "ignore";
         lidSwitchExternalPower = "suspend";
         powerKey = "suspend-then-hibernate";
         extraConfig = ''
