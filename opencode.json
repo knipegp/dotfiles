@@ -11,7 +11,8 @@
   },
   "permission": {
     "bash": {
-      "home-manager build *": "allow"
+      "home-manager build *": "allow",
+      "statix check *": "allow"
     }
   }
 }

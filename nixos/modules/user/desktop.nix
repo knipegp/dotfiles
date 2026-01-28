@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, pkgs-stable
-, ...
+{
+  config,
+  pkgs,
+  pkgs-stable,
+  ...
 }:
 {
   home.packages = with pkgs; [
@@ -26,9 +27,6 @@
     grim # screenshot functionality
     slurp # screenshot functionality
     wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-
-    # User tools
-    udiskie
 
     alsa-utils # Includes amixer for volume changing scripts
 

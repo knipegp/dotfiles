@@ -33,7 +33,10 @@
       "cat *": "allow",
       "hostname *": "allow",
       "pgrep ": "allow",
-      "sort *": "allow"
+      "sort *": "allow",
+      "ps *": "allow",
+      "tr *": "allow",
+      "echo *": "allow"
     }
   }
 }

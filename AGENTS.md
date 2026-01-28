@@ -7,8 +7,8 @@
 - **Shell scripts**: `shellcheck script.sh`
 - **Test Home Manager build**: `home-manager build --flake ~/dotfiles/nixos/home-manager/` (builds without applying changes)
 - **Apply Home Manager**: `home-manager switch -b backup --flake ~/dotfiles/nixos/home-manager/`
-- **Test NixOS build**: `sudo nixos-rebuild build --flake ~/dotfiles/nixos/#<hostname>` (builds without applying changes)
-- **Apply NixOS**: `sudo nixos-rebuild switch --flake ~/dotfiles/nixos/#<hostname>`
+- **Test NixOS build**: `nixos-rebuild build --flake ~/dotfiles/nixos/#<hostname>` (builds without applying changes)
+- **Apply NixOS**: `sudo nixos-rebuild switch --flake ~/dotfiles/nixos/#<hostname>` (agents cannot run this command because it requires elevated privileges)
 
 **IMPORTANT**: Always run build/test commands BEFORE applying changes to catch errors early.
 

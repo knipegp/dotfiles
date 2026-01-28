@@ -169,11 +169,6 @@ include ~/.config/sway/config.d/*.conf
 # Power menu using wofi
 bindsym $mod+0 exec bash $HOME/.config/waybar/scripts/power_control.sh
 
-# Lock screen when lid closes
-bindswitch --reload --locked lid:on exec loginctl lock-session
-# Re-enable monitor when lid opens
-bindswitch --reload --locked lid:off output eDP-1 enable
-
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.

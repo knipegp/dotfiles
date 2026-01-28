@@ -59,14 +59,20 @@ in
     polkit_gnome
     brightnessctl
     libsForQt5.qt5.qtwayland
+    where-is-my-sddm-theme
   ];
 
   services = {
     displayManager = {
       sddm = {
         enable = true;
+        package = pkgs.kdePackages.sddm;
         wayland.enable = true;
-        theme = "breeze";
+        theme = "where_is_my_sddm_theme";
+        extraPackages = with pkgs; [
+          where-is-my-sddm-theme
+          kdePackages.qt5compat
+        ];
       };
       defaultSession = "sway";
     };

@@ -4,7 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/system/desktop.nix
-    ../../modules/system/hyprland.nix
+    ../../modules/system/sway.nix
     ../../modules/system/development.nix
     ../../modules/system/griff-user.nix
     ../../modules/system/collect-garbage.nix
@@ -40,7 +40,10 @@
 
   services.resolved = {
     enable = true;
-    fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
+    fallbackDns = [
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
     extraConfig = ''
       DNSSECMode=no
     '';
