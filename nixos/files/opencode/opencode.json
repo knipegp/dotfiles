@@ -36,7 +36,10 @@
       "sort *": "allow",
       "ps *": "allow",
       "tr *": "allow",
-      "echo *": "allow"
+      "echo *": "allow",
+      "chmod *": "allow",
+      "mkdir *": "allow",
+      "git add -A": "deny"
     }
   }
 }
